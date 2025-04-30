@@ -1,13 +1,19 @@
-#ifndef TABLEAU_H
-#define TABLEAU_H
+#ifndef ASM_H
+#define ASM_H
 
 #include <stdio.h>
 
 #define TAILLE_TABLEAU 256
 
-
 // Déclaration du tableau et de la taille actuelle
-extern struct instruction ; 
+struct instruction {
+    char *name;
+    int res;
+    int nb1;
+    int nb2;
+};
+
+// 2. Ensuite déclarer le tableau
 extern struct instruction tableau[TAILLE_TABLEAU];
 extern int taille_actuelle_asm;
 

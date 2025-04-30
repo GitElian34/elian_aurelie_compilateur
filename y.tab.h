@@ -66,18 +66,18 @@ extern int yydebug;
     tMINUS = 267,                  /* tMINUS  */
     tDIV = 268,                    /* tDIV  */
     tMUL = 269,                    /* tMUL  */
-    tIF = 270,                     /* tIF  */
+    tELSE = 270,                   /* tELSE  */
     tOR = 271,                     /* tOR  */
     tAND = 272,                    /* tAND  */
-    tWHILE = 273,                  /* tWHILE  */
-    tELSE = 274,                   /* tELSE  */
-    tVOID = 275,                   /* tVOID  */
-    tEQ = 276,                     /* tEQ  */
-    tINFOREQ = 277,                /* tINFOREQ  */
-    tSUP = 278,                    /* tSUP  */
-    tSUPOREQ = 279,                /* tSUPOREQ  */
-    tINF = 280,                    /* tINF  */
-    tID = 281,                     /* tID  */
+    tVOID = 273,                   /* tVOID  */
+    tEQ = 274,                     /* tEQ  */
+    tINFOREQ = 275,                /* tINFOREQ  */
+    tSUP = 276,                    /* tSUP  */
+    tSUPOREQ = 277,                /* tSUPOREQ  */
+    tINF = 278,                    /* tINF  */
+    tID = 279,                     /* tID  */
+    tIF = 280,                     /* tIF  */
+    tWHILE = 281,                  /* tWHILE  */
     tNB = 282                      /* tNB  */
   };
   typedef enum yytokentype yytoken_kind_t;
@@ -99,18 +99,18 @@ extern int yydebug;
 #define tMINUS 267
 #define tDIV 268
 #define tMUL 269
-#define tIF 270
+#define tELSE 270
 #define tOR 271
 #define tAND 272
-#define tWHILE 273
-#define tELSE 274
-#define tVOID 275
-#define tEQ 276
-#define tINFOREQ 277
-#define tSUP 278
-#define tSUPOREQ 279
-#define tINF 280
-#define tID 281
+#define tVOID 273
+#define tEQ 274
+#define tINFOREQ 275
+#define tSUP 276
+#define tSUPOREQ 277
+#define tINF 278
+#define tID 279
+#define tIF 280
+#define tWHILE 281
 #define tNB 282
 
 /* Value type.  */
@@ -118,7 +118,7 @@ extern int yydebug;
 union YYSTYPE
 {
 #line 10 "compilateur.y"
- int nb; char name[128]; 
+ int nb; int ligne2; int ligne; char name[128]; 
 
 #line 124 "y.tab.h"
 

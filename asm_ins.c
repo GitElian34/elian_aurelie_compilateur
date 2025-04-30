@@ -1,13 +1,4 @@
 #include "asm_ins.h"
-struct instruction{
-    char * name;
-    int res ;
-    int nb1;
-    int nb2;
-
-   
-
-};
 
 struct instruction tableau [TAILLE_TABLEAU]; // Tableau de 256 cases
 int taille_actuelle_asm= 0;  
@@ -15,7 +6,7 @@ int taille_actuelle_asm= 0;
 
 // Initialisation du tableau avec des valeurs de 0 à 255 (ou vide selon besoin)
 void initialiser_tableau() {
-    taille_actuelle_asm = 0;
+    taille_actuelle_asm = 0; 
      // Vide au départsq
 }
 
@@ -34,7 +25,7 @@ void patch(int line_if, int new_line){
 
 // Ajout d'un élément au tableau
 int ajouter_instruction(char val[32],int resultat, int nbre1, int nbre2){
-    if (taille_actuelle_asm_asm >= TAILLE_TABLEAU) {
+    if (taille_actuelle_asm >= TAILLE_TABLEAU) {
         printf("Erreur : le tableau est plein.\n");
         return 0; // Échec
     }

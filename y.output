@@ -1,22 +1,22 @@
-Terminaux inutilisés dans la grammaire
+Terminals unused in grammar
 
     tOR
     tAND
     tVOID
 
 
-État 62 conflits: 4 décalage/réduction
-État 63 conflits: 4 décalage/réduction
-État 64 conflits: 4 décalage/réduction
-État 65 conflits: 4 décalage/réduction
-État 66 conflits: 4 décalage/réduction
-État 67 conflits: 9 décalage/réduction
-État 68 conflits: 9 décalage/réduction
-État 69 conflits: 9 décalage/réduction
-État 70 conflits: 9 décalage/réduction
+State 62 conflicts: 4 shift/reduce
+State 63 conflicts: 4 shift/reduce
+State 64 conflicts: 4 shift/reduce
+State 65 conflicts: 4 shift/reduce
+State 66 conflicts: 4 shift/reduce
+State 67 conflicts: 9 shift/reduce
+State 68 conflicts: 9 shift/reduce
+State 69 conflicts: 9 shift/reduce
+State 70 conflicts: 9 shift/reduce
 
 
-Grammaire
+Grammar
 
     0 $accept: Program $end
 
@@ -33,1088 +33,1116 @@ Grammaire
     7 ArgsM: tCOMA tINT tID ArgsM
     8      | ε
 
-    9 Body: tOB Lins tCB
+    9 $@1: ε
 
-   10 Lins: Ins Lins
-   11     | ε
+   10 Body: tOB $@1 Lins tCB
 
-   12 Ins: Aff
-   13    | If
-   14    | While
-   15    | Decla
+   11 Lins: Ins Lins
+   12     | ε
 
-   16 Aff: tID tAS E tSEM
+   13 Ins: Aff
+   14    | If
+   15    | While
+   16    | Decla
 
-   17 Decla: tINT Decla1 DeclaS tSEM
+   17 Aff: tID tAS E tSEM
 
-   18 Decla1: tID
-   19       | tID tAS E
+   18 Decla: tINT Decla1 DeclaS tSEM
 
-   20 DeclaS: ε
-   21       | tCOMA Decla1 DeclaS
+   19 Decla1: tID
+   20       | tID tAS E
 
-   22 $@1: ε
+   21 DeclaS: ε
+   22       | tCOMA Decla1 DeclaS
 
-   23 If: tIF tOP E tCP $@1 Body Else
+   23 $@2: ε
 
-   24 $@2: ε
+   24 $@3: ε
 
-   25 Else: tELSE $@2 Body
-   26     | ε
+   25 If: tIF tOP E tCP $@2 Body $@3 Else
 
-   27 $@3: ε
+   26 $@4: ε
 
-   28 While: tWHILE tOP E tCP $@3 Body
+   27 Else: tELSE $@4 Body
+   28     | ε
 
-   29 E: tNB
-   30  | tID
-   31  | E tPLUS E
-   32  | E tMUL E
-   33  | E tMINUS E
-   34  | E tDIV E
-   35  | E tEQ E
-   36  | E tSUP E
-   37  | E tSUPOREQ E
-   38  | E tINF E
-   39  | E tINFOREQ E
+   29 $@5: ε
+
+   30 While: tWHILE tOP E tCP $@5 Body
+
+   31 E: tNB
+   32  | tID
+   33  | E tPLUS E
+   34  | E tMUL E
+   35  | E tMINUS E
+   36  | E tDIV E
+   37  | E tEQ E
+   38  | E tSUP E
+   39  | E tSUPOREQ E
+   40  | E tINF E
+   41  | E tINFOREQ E
 
 
-Terminaux, suivis des règles où ils apparaissent
+Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    tINT (258) 4 5 7 17
-    tOP (259) 4 23 28
-    tCP (260) 4 23 28
-    tOB (261) 9
-    tCB (262) 9
-    tAS (263) 16 19
-    tSEM (264) 16 17
-    tCOMA (265) 7 21
-    tPLUS (266) 31
-    tMINUS (267) 33
-    tDIV (268) 34
-    tMUL (269) 32
-    tIF (270) 23
+    tINT (258) 4 5 7 18
+    tOP (259) 4 25 30
+    tCP (260) 4 25 30
+    tOB (261) 10
+    tCB (262) 10
+    tAS (263) 17 20
+    tSEM (264) 17 18
+    tCOMA (265) 7 22
+    tPLUS (266) 33
+    tMINUS (267) 35
+    tDIV (268) 36
+    tMUL (269) 34
+    tELSE (270) 27
     tOR (271)
     tAND (272)
-    tWHILE (273) 28
-    tELSE (274) 25
-    tVOID (275)
-    tEQ (276) 35
-    tINFOREQ (277) 39
-    tSUP (278) 36
-    tSUPOREQ (279) 37
-    tINF (280) 38
-    tID <name> (281) 4 5 7 16 18 19 30
-    tNB <nb> (282) 29
+    tVOID (273)
+    tEQ (274) 37
+    tINFOREQ (275) 41
+    tSUP (276) 38
+    tSUPOREQ (277) 39
+    tINF (278) 40
+    tID <name> (279) 4 5 7 17 19 20 32
+    tIF <ligne> (280) 25
+    tWHILE <ligne2> (281) 30
+    tNB <nb> (282) 31
 
 
-Non-terminaux, suivis des règles où ils apparaissent
+Nonterminals, with rules where they appear
 
     $accept (28)
-        à gauche: 0
+        on left: 0
     Program (29)
-        à gauche: 1
-        à droite: 0
+        on left: 1
+        on right: 0
     Funs (30)
-        à gauche: 2 3
-        à droite: 1 2
+        on left: 2 3
+        on right: 1 2
     Fun (31)
-        à gauche: 4
-        à droite: 2 3
+        on left: 4
+        on right: 2 3
     Args (32)
-        à gauche: 5 6
-        à droite: 4
+        on left: 5 6
+        on right: 4
     ArgsM (33)
-        à gauche: 7 8
-        à droite: 5 7
+        on left: 7 8
+        on right: 5 7
     Body (34)
-        à gauche: 9
-        à droite: 4 23 25 28
-    Lins (35)
-        à gauche: 10 11
-        à droite: 9 10
-    Ins (36)
-        à gauche: 12 13 14 15
-        à droite: 10
-    Aff (37)
-        à gauche: 16
-        à droite: 12
-    Decla (38)
-        à gauche: 17
-        à droite: 15
-    Decla1 (39)
-        à gauche: 18 19
-        à droite: 17 21
-    DeclaS (40)
-        à gauche: 20 21
-        à droite: 17 21
-    If (41)
-        à gauche: 23
-        à droite: 13
-    $@1 (42)
-        à gauche: 22
-        à droite: 23
-    Else (43)
-        à gauche: 25 26
-        à droite: 23
-    $@2 (44)
-        à gauche: 24
-        à droite: 25
-    While (45)
-        à gauche: 28
-        à droite: 14
-    $@3 (46)
-        à gauche: 27
-        à droite: 28
-    E (47)
-        à gauche: 29 30 31 32 33 34 35 36 37 38 39
-        à droite: 16 19 23 28 31 32 33 34 35 36 37 38 39
+        on left: 10
+        on right: 4 25 27 30
+    $@1 (35)
+        on left: 9
+        on right: 10
+    Lins (36)
+        on left: 11 12
+        on right: 10 11
+    Ins (37)
+        on left: 13 14 15 16
+        on right: 11
+    Aff (38)
+        on left: 17
+        on right: 13
+    Decla (39)
+        on left: 18
+        on right: 16
+    Decla1 (40)
+        on left: 19 20
+        on right: 18 22
+    DeclaS (41)
+        on left: 21 22
+        on right: 18 22
+    If (42)
+        on left: 25
+        on right: 14
+    $@2 (43)
+        on left: 23
+        on right: 25
+    $@3 (44)
+        on left: 24
+        on right: 25
+    Else (45)
+        on left: 27 28
+        on right: 25
+    $@4 (46)
+        on left: 26
+        on right: 27
+    While (47)
+        on left: 30
+        on right: 15
+    $@5 (48)
+        on left: 29
+        on right: 30
+    E (49)
+        on left: 31 32 33 34 35 36 37 38 39 40 41
+        on right: 17 20 25 30 33 34 35 36 37 38 39 40 41
 
 
-État 0
+State 0
 
     0 $accept: • Program $end
 
-    tINT  décalage et aller à l'état 1
+    tINT  shift, and go to state 1
 
-    Program  aller à l'état 2
-    Funs     aller à l'état 3
-    Fun      aller à l'état 4
+    Program  go to state 2
+    Funs     go to state 3
+    Fun      go to state 4
 
 
-État 1
+State 1
 
     4 Fun: tINT • tID tOP Args tCP Body
 
-    tID  décalage et aller à l'état 5
+    tID  shift, and go to state 5
 
 
-État 2
+State 2
 
     0 $accept: Program • $end
 
-    $end  décalage et aller à l'état 6
+    $end  shift, and go to state 6
 
 
-État 3
+State 3
 
     1 Program: Funs •
 
-    $défaut  réduction par utilisation de la règle 1 (Program)
+    $default  reduce using rule 1 (Program)
 
 
-État 4
+State 4
 
     2 Funs: Fun • Funs
     3     | Fun •
 
-    tINT  décalage et aller à l'état 1
+    tINT  shift, and go to state 1
 
-    $défaut  réduction par utilisation de la règle 3 (Funs)
+    $default  reduce using rule 3 (Funs)
 
-    Funs  aller à l'état 7
-    Fun   aller à l'état 4
+    Funs  go to state 7
+    Fun   go to state 4
 
 
-État 5
+State 5
 
     4 Fun: tINT tID • tOP Args tCP Body
 
-    tOP  décalage et aller à l'état 8
+    tOP  shift, and go to state 8
 
 
-État 6
+State 6
 
     0 $accept: Program $end •
 
-    $défaut  accepter
+    $default  accept
 
 
-État 7
+State 7
 
     2 Funs: Fun Funs •
 
-    $défaut  réduction par utilisation de la règle 2 (Funs)
+    $default  reduce using rule 2 (Funs)
 
 
-État 8
+State 8
 
     4 Fun: tINT tID tOP • Args tCP Body
 
-    tINT  décalage et aller à l'état 9
+    tINT  shift, and go to state 9
 
-    $défaut  réduction par utilisation de la règle 6 (Args)
+    $default  reduce using rule 6 (Args)
 
-    Args  aller à l'état 10
+    Args  go to state 10
 
 
-État 9
+State 9
 
     5 Args: tINT • tID ArgsM
 
-    tID  décalage et aller à l'état 11
+    tID  shift, and go to state 11
 
 
-État 10
+State 10
 
     4 Fun: tINT tID tOP Args • tCP Body
 
-    tCP  décalage et aller à l'état 12
+    tCP  shift, and go to state 12
 
 
-État 11
+State 11
 
     5 Args: tINT tID • ArgsM
 
-    tCOMA  décalage et aller à l'état 13
+    tCOMA  shift, and go to state 13
 
-    $défaut  réduction par utilisation de la règle 8 (ArgsM)
+    $default  reduce using rule 8 (ArgsM)
 
-    ArgsM  aller à l'état 14
+    ArgsM  go to state 14
 
 
-État 12
+State 12
 
     4 Fun: tINT tID tOP Args tCP • Body
 
-    tOB  décalage et aller à l'état 15
+    tOB  shift, and go to state 15
 
-    Body  aller à l'état 16
+    Body  go to state 16
 
 
-État 13
+State 13
 
     7 ArgsM: tCOMA • tINT tID ArgsM
 
-    tINT  décalage et aller à l'état 17
+    tINT  shift, and go to state 17
 
 
-État 14
+State 14
 
     5 Args: tINT tID ArgsM •
 
-    $défaut  réduction par utilisation de la règle 5 (Args)
+    $default  reduce using rule 5 (Args)
 
 
-État 15
+State 15
 
-    9 Body: tOB • Lins tCB
+   10 Body: tOB • $@1 Lins tCB
 
-    tINT    décalage et aller à l'état 18
-    tIF     décalage et aller à l'état 19
-    tWHILE  décalage et aller à l'état 20
-    tID     décalage et aller à l'état 21
+    $default  reduce using rule 9 ($@1)
 
-    $défaut  réduction par utilisation de la règle 11 (Lins)
-
-    Lins   aller à l'état 22
-    Ins    aller à l'état 23
-    Aff    aller à l'état 24
-    Decla  aller à l'état 25
-    If     aller à l'état 26
-    While  aller à l'état 27
+    $@1  go to state 18
 
 
-État 16
+State 16
 
     4 Fun: tINT tID tOP Args tCP Body •
 
-    $défaut  réduction par utilisation de la règle 4 (Fun)
+    $default  reduce using rule 4 (Fun)
 
 
-État 17
+State 17
 
     7 ArgsM: tCOMA tINT • tID ArgsM
 
-    tID  décalage et aller à l'état 28
+    tID  shift, and go to state 19
 
 
-État 18
+State 18
 
-   17 Decla: tINT • Decla1 DeclaS tSEM
+   10 Body: tOB $@1 • Lins tCB
 
-    tID  décalage et aller à l'état 29
+    tINT    shift, and go to state 20
+    tID     shift, and go to state 21
+    tIF     shift, and go to state 22
+    tWHILE  shift, and go to state 23
 
-    Decla1  aller à l'état 30
+    $default  reduce using rule 12 (Lins)
 
-
-État 19
-
-   23 If: tIF • tOP E tCP $@1 Body Else
-
-    tOP  décalage et aller à l'état 31
-
-
-État 20
-
-   28 While: tWHILE • tOP E tCP $@3 Body
-
-    tOP  décalage et aller à l'état 32
+    Lins   go to state 24
+    Ins    go to state 25
+    Aff    go to state 26
+    Decla  go to state 27
+    If     go to state 28
+    While  go to state 29
 
 
-État 21
-
-   16 Aff: tID • tAS E tSEM
-
-    tAS  décalage et aller à l'état 33
-
-
-État 22
-
-    9 Body: tOB Lins • tCB
-
-    tCB  décalage et aller à l'état 34
-
-
-État 23
-
-   10 Lins: Ins • Lins
-
-    tINT    décalage et aller à l'état 18
-    tIF     décalage et aller à l'état 19
-    tWHILE  décalage et aller à l'état 20
-    tID     décalage et aller à l'état 21
-
-    $défaut  réduction par utilisation de la règle 11 (Lins)
-
-    Lins   aller à l'état 35
-    Ins    aller à l'état 23
-    Aff    aller à l'état 24
-    Decla  aller à l'état 25
-    If     aller à l'état 26
-    While  aller à l'état 27
-
-
-État 24
-
-   12 Ins: Aff •
-
-    $défaut  réduction par utilisation de la règle 12 (Ins)
-
-
-État 25
-
-   15 Ins: Decla •
-
-    $défaut  réduction par utilisation de la règle 15 (Ins)
-
-
-État 26
-
-   13 Ins: If •
-
-    $défaut  réduction par utilisation de la règle 13 (Ins)
-
-
-État 27
-
-   14 Ins: While •
-
-    $défaut  réduction par utilisation de la règle 14 (Ins)
-
-
-État 28
+State 19
 
     7 ArgsM: tCOMA tINT tID • ArgsM
 
-    tCOMA  décalage et aller à l'état 13
+    tCOMA  shift, and go to state 13
 
-    $défaut  réduction par utilisation de la règle 8 (ArgsM)
+    $default  reduce using rule 8 (ArgsM)
 
-    ArgsM  aller à l'état 36
-
-
-État 29
-
-   18 Decla1: tID •
-   19       | tID • tAS E
-
-    tAS  décalage et aller à l'état 37
-
-    $défaut  réduction par utilisation de la règle 18 (Decla1)
+    ArgsM  go to state 30
 
 
-État 30
+State 20
 
-   17 Decla: tINT Decla1 • DeclaS tSEM
+   18 Decla: tINT • Decla1 DeclaS tSEM
 
-    tCOMA  décalage et aller à l'état 38
+    tID  shift, and go to state 31
 
-    $défaut  réduction par utilisation de la règle 20 (DeclaS)
-
-    DeclaS  aller à l'état 39
+    Decla1  go to state 32
 
 
-État 31
+State 21
 
-   23 If: tIF tOP • E tCP $@1 Body Else
+   17 Aff: tID • tAS E tSEM
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
-
-    E  aller à l'état 42
+    tAS  shift, and go to state 33
 
 
-État 32
+State 22
 
-   28 While: tWHILE tOP • E tCP $@3 Body
+   25 If: tIF • tOP E tCP $@2 Body $@3 Else
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
-
-    E  aller à l'état 43
+    tOP  shift, and go to state 34
 
 
-État 33
+State 23
 
-   16 Aff: tID tAS • E tSEM
+   30 While: tWHILE • tOP E tCP $@5 Body
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
-
-    E  aller à l'état 44
+    tOP  shift, and go to state 35
 
 
-État 34
+State 24
 
-    9 Body: tOB Lins tCB •
+   10 Body: tOB $@1 Lins • tCB
 
-    $défaut  réduction par utilisation de la règle 9 (Body)
-
-
-État 35
-
-   10 Lins: Ins Lins •
-
-    $défaut  réduction par utilisation de la règle 10 (Lins)
+    tCB  shift, and go to state 36
 
 
-État 36
+State 25
+
+   11 Lins: Ins • Lins
+
+    tINT    shift, and go to state 20
+    tID     shift, and go to state 21
+    tIF     shift, and go to state 22
+    tWHILE  shift, and go to state 23
+
+    $default  reduce using rule 12 (Lins)
+
+    Lins   go to state 37
+    Ins    go to state 25
+    Aff    go to state 26
+    Decla  go to state 27
+    If     go to state 28
+    While  go to state 29
+
+
+State 26
+
+   13 Ins: Aff •
+
+    $default  reduce using rule 13 (Ins)
+
+
+State 27
+
+   16 Ins: Decla •
+
+    $default  reduce using rule 16 (Ins)
+
+
+State 28
+
+   14 Ins: If •
+
+    $default  reduce using rule 14 (Ins)
+
+
+State 29
+
+   15 Ins: While •
+
+    $default  reduce using rule 15 (Ins)
+
+
+State 30
 
     7 ArgsM: tCOMA tINT tID ArgsM •
 
-    $défaut  réduction par utilisation de la règle 7 (ArgsM)
+    $default  reduce using rule 7 (ArgsM)
 
 
-État 37
+State 31
 
-   19 Decla1: tID tAS • E
+   19 Decla1: tID •
+   20       | tID • tAS E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+    tAS  shift, and go to state 38
 
-    E  aller à l'état 45
+    $default  reduce using rule 19 (Decla1)
 
 
-État 38
+State 32
 
-   21 DeclaS: tCOMA • Decla1 DeclaS
+   18 Decla: tINT Decla1 • DeclaS tSEM
 
-    tID  décalage et aller à l'état 29
+    tCOMA  shift, and go to state 39
 
-    Decla1  aller à l'état 46
+    $default  reduce using rule 21 (DeclaS)
 
+    DeclaS  go to state 40
 
-État 39
 
-   17 Decla: tINT Decla1 DeclaS • tSEM
+State 33
 
-    tSEM  décalage et aller à l'état 47
+   17 Aff: tID tAS • E tSEM
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 40
+    E  go to state 43
 
-   30 E: tID •
 
-    $défaut  réduction par utilisation de la règle 30 (E)
+State 34
 
+   25 If: tIF tOP • E tCP $@2 Body $@3 Else
 
-État 41
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-   29 E: tNB •
+    E  go to state 44
 
-    $défaut  réduction par utilisation de la règle 29 (E)
 
+State 35
 
-État 42
+   30 While: tWHILE tOP • E tCP $@5 Body
 
-   23 If: tIF tOP E • tCP $@1 Body Else
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-    tCP       décalage et aller à l'état 48
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    E  go to state 45
 
 
-État 43
+State 36
 
-   28 While: tWHILE tOP E • tCP $@3 Body
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+   10 Body: tOB $@1 Lins tCB •
 
-    tCP       décalage et aller à l'état 58
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    $default  reduce using rule 10 (Body)
 
 
-État 44
+State 37
 
-   16 Aff: tID tAS E • tSEM
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+   11 Lins: Ins Lins •
 
-    tSEM      décalage et aller à l'état 59
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    $default  reduce using rule 11 (Lins)
 
 
-État 45
+State 38
 
-   19 Decla1: tID tAS E •
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+   20 Decla1: tID tAS • E
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-    $défaut  réduction par utilisation de la règle 19 (Decla1)
+    E  go to state 46
 
 
-État 46
+State 39
 
-   21 DeclaS: tCOMA Decla1 • DeclaS
+   22 DeclaS: tCOMA • Decla1 DeclaS
 
-    tCOMA  décalage et aller à l'état 38
+    tID  shift, and go to state 31
 
-    $défaut  réduction par utilisation de la règle 20 (DeclaS)
+    Decla1  go to state 47
 
-    DeclaS  aller à l'état 60
 
+State 40
 
-État 47
+   18 Decla: tINT Decla1 DeclaS • tSEM
 
-   17 Decla: tINT Decla1 DeclaS tSEM •
+    tSEM  shift, and go to state 48
 
-    $défaut  réduction par utilisation de la règle 17 (Decla)
 
+State 41
 
-État 48
+   32 E: tID •
 
-   23 If: tIF tOP E tCP • $@1 Body Else
+    $default  reduce using rule 32 (E)
 
-    $défaut  réduction par utilisation de la règle 22 ($@1)
 
-    $@1  aller à l'état 61
+State 42
+
+   31 E: tNB •
+
+    $default  reduce using rule 31 (E)
+
+
+State 43
+
+   17 Aff: tID tAS E • tSEM
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
+
+    tSEM      shift, and go to state 49
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
 
-État 49
+State 44
 
-   31 E: E tPLUS • E
+   25 If: tIF tOP E • tCP $@2 Body $@3 Else
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+    tCP       shift, and go to state 59
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-    E  aller à l'état 62
 
+State 45
 
-État 50
+   30 While: tWHILE tOP E • tCP $@5 Body
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-   33 E: E tMINUS • E
+    tCP       shift, and go to state 60
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
 
-    E  aller à l'état 63
+State 46
 
+   20 Decla1: tID tAS E •
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 51
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   34 E: E tDIV • E
+    $default  reduce using rule 20 (Decla1)
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
 
-    E  aller à l'état 64
+State 47
 
+   22 DeclaS: tCOMA Decla1 • DeclaS
 
-État 52
+    tCOMA  shift, and go to state 39
 
-   32 E: E tMUL • E
+    $default  reduce using rule 21 (DeclaS)
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+    DeclaS  go to state 61
 
-    E  aller à l'état 65
 
+State 48
 
-État 53
+   18 Decla: tINT Decla1 DeclaS tSEM •
 
-   35 E: E tEQ • E
+    $default  reduce using rule 18 (Decla)
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
 
-    E  aller à l'état 66
+State 49
 
+   17 Aff: tID tAS E tSEM •
 
-État 54
+    $default  reduce using rule 17 (Aff)
 
-   39 E: E tINFOREQ • E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+State 50
 
-    E  aller à l'état 67
+   33 E: E tPLUS • E
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 55
+    E  go to state 62
 
-   36 E: E tSUP • E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+State 51
 
-    E  aller à l'état 68
+   35 E: E tMINUS • E
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 56
+    E  go to state 63
 
-   37 E: E tSUPOREQ • E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+State 52
 
-    E  aller à l'état 69
+   36 E: E tDIV • E
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 57
+    E  go to state 64
 
-   38 E: E tINF • E
 
-    tID  décalage et aller à l'état 40
-    tNB  décalage et aller à l'état 41
+State 53
 
-    E  aller à l'état 70
+   34 E: E tMUL • E
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 58
+    E  go to state 65
 
-   28 While: tWHILE tOP E tCP • $@3 Body
 
-    $défaut  réduction par utilisation de la règle 27 ($@3)
+State 54
 
-    $@3  aller à l'état 71
+   37 E: E tEQ • E
 
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-État 59
+    E  go to state 66
 
-   16 Aff: tID tAS E tSEM •
 
-    $défaut  réduction par utilisation de la règle 16 (Aff)
+State 55
 
+   41 E: E tINFOREQ • E
 
-État 60
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-   21 DeclaS: tCOMA Decla1 DeclaS •
+    E  go to state 67
 
-    $défaut  réduction par utilisation de la règle 21 (DeclaS)
 
+State 56
 
-État 61
+   38 E: E tSUP • E
 
-   23 If: tIF tOP E tCP $@1 • Body Else
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-    tOB  décalage et aller à l'état 15
+    E  go to state 68
 
-    Body  aller à l'état 72
 
+State 57
 
-État 62
+   39 E: E tSUPOREQ • E
 
-   31 E: E • tPLUS E
-   31  | E tPLUS E •
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    E  go to state 69
 
-    tINFOREQ  [réduction par utilisation de la règle 31 (E)]
-    tSUP      [réduction par utilisation de la règle 31 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 31 (E)]
-    tINF      [réduction par utilisation de la règle 31 (E)]
-    $défaut   réduction par utilisation de la règle 31 (E)
 
+State 58
 
-État 63
+   40 E: E tINF • E
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   33  | E tMINUS E •
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    tID  shift, and go to state 41
+    tNB  shift, and go to state 42
 
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    E  go to state 70
 
-    tINFOREQ  [réduction par utilisation de la règle 33 (E)]
-    tSUP      [réduction par utilisation de la règle 33 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 33 (E)]
-    tINF      [réduction par utilisation de la règle 33 (E)]
-    $défaut   réduction par utilisation de la règle 33 (E)
 
+State 59
 
-État 64
+   25 If: tIF tOP E tCP • $@2 Body $@3 Else
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   34  | E tDIV E •
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    $default  reduce using rule 23 ($@2)
 
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    $@2  go to state 71
 
-    tINFOREQ  [réduction par utilisation de la règle 34 (E)]
-    tSUP      [réduction par utilisation de la règle 34 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 34 (E)]
-    tINF      [réduction par utilisation de la règle 34 (E)]
-    $défaut   réduction par utilisation de la règle 34 (E)
 
+State 60
 
-État 65
+   30 While: tWHILE tOP E tCP • $@5 Body
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   32  | E tMUL E •
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    $default  reduce using rule 29 ($@5)
 
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
+    $@5  go to state 72
 
-    tINFOREQ  [réduction par utilisation de la règle 32 (E)]
-    tSUP      [réduction par utilisation de la règle 32 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 32 (E)]
-    tINF      [réduction par utilisation de la règle 32 (E)]
-    $défaut   réduction par utilisation de la règle 32 (E)
 
+State 61
 
-État 66
+   22 DeclaS: tCOMA Decla1 DeclaS •
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   35  | E tEQ E •
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    $default  reduce using rule 22 (DeclaS)
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
 
-    tINFOREQ  [réduction par utilisation de la règle 35 (E)]
-    tSUP      [réduction par utilisation de la règle 35 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 35 (E)]
-    tINF      [réduction par utilisation de la règle 35 (E)]
-    $défaut   réduction par utilisation de la règle 35 (E)
+State 62
 
+   33 E: E • tPLUS E
+   33  | E tPLUS E •
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 67
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
-   39  | E tINFOREQ E •
+    tINFOREQ  [reduce using rule 33 (E)]
+    tSUP      [reduce using rule 33 (E)]
+    tSUPOREQ  [reduce using rule 33 (E)]
+    tINF      [reduce using rule 33 (E)]
+    $default  reduce using rule 33 (E)
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
 
-    tPLUS     [réduction par utilisation de la règle 39 (E)]
-    tMINUS    [réduction par utilisation de la règle 39 (E)]
-    tDIV      [réduction par utilisation de la règle 39 (E)]
-    tMUL      [réduction par utilisation de la règle 39 (E)]
-    tEQ       [réduction par utilisation de la règle 39 (E)]
-    tINFOREQ  [réduction par utilisation de la règle 39 (E)]
-    tSUP      [réduction par utilisation de la règle 39 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 39 (E)]
-    tINF      [réduction par utilisation de la règle 39 (E)]
-    $défaut   réduction par utilisation de la règle 39 (E)
+State 63
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   35  | E tMINUS E •
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 68
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   36  | E tSUP E •
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    tINFOREQ  [reduce using rule 35 (E)]
+    tSUP      [reduce using rule 35 (E)]
+    tSUPOREQ  [reduce using rule 35 (E)]
+    tINF      [reduce using rule 35 (E)]
+    $default  reduce using rule 35 (E)
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
 
-    tPLUS     [réduction par utilisation de la règle 36 (E)]
-    tMINUS    [réduction par utilisation de la règle 36 (E)]
-    tDIV      [réduction par utilisation de la règle 36 (E)]
-    tMUL      [réduction par utilisation de la règle 36 (E)]
-    tEQ       [réduction par utilisation de la règle 36 (E)]
-    tINFOREQ  [réduction par utilisation de la règle 36 (E)]
-    tSUP      [réduction par utilisation de la règle 36 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 36 (E)]
-    tINF      [réduction par utilisation de la règle 36 (E)]
-    $défaut   réduction par utilisation de la règle 36 (E)
+State 64
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   36  | E tDIV E •
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 69
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   37  | E tSUPOREQ E •
-   38  | E • tINF E
-   39  | E • tINFOREQ E
+    tINFOREQ  [reduce using rule 36 (E)]
+    tSUP      [reduce using rule 36 (E)]
+    tSUPOREQ  [reduce using rule 36 (E)]
+    tINF      [reduce using rule 36 (E)]
+    $default  reduce using rule 36 (E)
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
 
-    tPLUS     [réduction par utilisation de la règle 37 (E)]
-    tMINUS    [réduction par utilisation de la règle 37 (E)]
-    tDIV      [réduction par utilisation de la règle 37 (E)]
-    tMUL      [réduction par utilisation de la règle 37 (E)]
-    tEQ       [réduction par utilisation de la règle 37 (E)]
-    tINFOREQ  [réduction par utilisation de la règle 37 (E)]
-    tSUP      [réduction par utilisation de la règle 37 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 37 (E)]
-    tINF      [réduction par utilisation de la règle 37 (E)]
-    $défaut   réduction par utilisation de la règle 37 (E)
+State 65
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   34  | E tMUL E •
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 70
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   31 E: E • tPLUS E
-   32  | E • tMUL E
-   33  | E • tMINUS E
-   34  | E • tDIV E
-   35  | E • tEQ E
-   36  | E • tSUP E
-   37  | E • tSUPOREQ E
-   38  | E • tINF E
-   38  | E tINF E •
-   39  | E • tINFOREQ E
+    tINFOREQ  [reduce using rule 34 (E)]
+    tSUP      [reduce using rule 34 (E)]
+    tSUPOREQ  [reduce using rule 34 (E)]
+    tINF      [reduce using rule 34 (E)]
+    $default  reduce using rule 34 (E)
 
-    tPLUS     décalage et aller à l'état 49
-    tMINUS    décalage et aller à l'état 50
-    tDIV      décalage et aller à l'état 51
-    tMUL      décalage et aller à l'état 52
-    tEQ       décalage et aller à l'état 53
-    tINFOREQ  décalage et aller à l'état 54
-    tSUP      décalage et aller à l'état 55
-    tSUPOREQ  décalage et aller à l'état 56
-    tINF      décalage et aller à l'état 57
 
-    tPLUS     [réduction par utilisation de la règle 38 (E)]
-    tMINUS    [réduction par utilisation de la règle 38 (E)]
-    tDIV      [réduction par utilisation de la règle 38 (E)]
-    tMUL      [réduction par utilisation de la règle 38 (E)]
-    tEQ       [réduction par utilisation de la règle 38 (E)]
-    tINFOREQ  [réduction par utilisation de la règle 38 (E)]
-    tSUP      [réduction par utilisation de la règle 38 (E)]
-    tSUPOREQ  [réduction par utilisation de la règle 38 (E)]
-    tINF      [réduction par utilisation de la règle 38 (E)]
-    $défaut   réduction par utilisation de la règle 38 (E)
+State 66
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   37  | E tEQ E •
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 71
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   28 While: tWHILE tOP E tCP $@3 • Body
+    tINFOREQ  [reduce using rule 37 (E)]
+    tSUP      [reduce using rule 37 (E)]
+    tSUPOREQ  [reduce using rule 37 (E)]
+    tINF      [reduce using rule 37 (E)]
+    $default  reduce using rule 37 (E)
 
-    tOB  décalage et aller à l'état 15
 
-    Body  aller à l'état 73
+State 67
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
+   41  | E tINFOREQ E •
 
-État 72
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   23 If: tIF tOP E tCP $@1 Body • Else
+    tPLUS     [reduce using rule 41 (E)]
+    tMINUS    [reduce using rule 41 (E)]
+    tDIV      [reduce using rule 41 (E)]
+    tMUL      [reduce using rule 41 (E)]
+    tEQ       [reduce using rule 41 (E)]
+    tINFOREQ  [reduce using rule 41 (E)]
+    tSUP      [reduce using rule 41 (E)]
+    tSUPOREQ  [reduce using rule 41 (E)]
+    tINF      [reduce using rule 41 (E)]
+    $default  reduce using rule 41 (E)
 
-    tELSE  décalage et aller à l'état 74
 
-    $défaut  réduction par utilisation de la règle 26 (Else)
+State 68
 
-    Else  aller à l'état 75
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   38  | E tSUP E •
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-État 73
+    tPLUS     [reduce using rule 38 (E)]
+    tMINUS    [reduce using rule 38 (E)]
+    tDIV      [reduce using rule 38 (E)]
+    tMUL      [reduce using rule 38 (E)]
+    tEQ       [reduce using rule 38 (E)]
+    tINFOREQ  [reduce using rule 38 (E)]
+    tSUP      [reduce using rule 38 (E)]
+    tSUPOREQ  [reduce using rule 38 (E)]
+    tINF      [reduce using rule 38 (E)]
+    $default  reduce using rule 38 (E)
 
-   28 While: tWHILE tOP E tCP $@3 Body •
 
-    $défaut  réduction par utilisation de la règle 28 (While)
+State 69
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   39  | E tSUPOREQ E •
+   40  | E • tINF E
+   41  | E • tINFOREQ E
 
-État 74
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   25 Else: tELSE • $@2 Body
+    tPLUS     [reduce using rule 39 (E)]
+    tMINUS    [reduce using rule 39 (E)]
+    tDIV      [reduce using rule 39 (E)]
+    tMUL      [reduce using rule 39 (E)]
+    tEQ       [reduce using rule 39 (E)]
+    tINFOREQ  [reduce using rule 39 (E)]
+    tSUP      [reduce using rule 39 (E)]
+    tSUPOREQ  [reduce using rule 39 (E)]
+    tINF      [reduce using rule 39 (E)]
+    $default  reduce using rule 39 (E)
 
-    $défaut  réduction par utilisation de la règle 24 ($@2)
 
-    $@2  aller à l'état 76
+State 70
 
+   33 E: E • tPLUS E
+   34  | E • tMUL E
+   35  | E • tMINUS E
+   36  | E • tDIV E
+   37  | E • tEQ E
+   38  | E • tSUP E
+   39  | E • tSUPOREQ E
+   40  | E • tINF E
+   40  | E tINF E •
+   41  | E • tINFOREQ E
 
-État 75
+    tPLUS     shift, and go to state 50
+    tMINUS    shift, and go to state 51
+    tDIV      shift, and go to state 52
+    tMUL      shift, and go to state 53
+    tEQ       shift, and go to state 54
+    tINFOREQ  shift, and go to state 55
+    tSUP      shift, and go to state 56
+    tSUPOREQ  shift, and go to state 57
+    tINF      shift, and go to state 58
 
-   23 If: tIF tOP E tCP $@1 Body Else •
+    tPLUS     [reduce using rule 40 (E)]
+    tMINUS    [reduce using rule 40 (E)]
+    tDIV      [reduce using rule 40 (E)]
+    tMUL      [reduce using rule 40 (E)]
+    tEQ       [reduce using rule 40 (E)]
+    tINFOREQ  [reduce using rule 40 (E)]
+    tSUP      [reduce using rule 40 (E)]
+    tSUPOREQ  [reduce using rule 40 (E)]
+    tINF      [reduce using rule 40 (E)]
+    $default  reduce using rule 40 (E)
 
-    $défaut  réduction par utilisation de la règle 23 (If)
 
+State 71
 
-État 76
+   25 If: tIF tOP E tCP $@2 • Body $@3 Else
 
-   25 Else: tELSE $@2 • Body
+    tOB  shift, and go to state 15
 
-    tOB  décalage et aller à l'état 15
+    Body  go to state 73
 
-    Body  aller à l'état 77
 
+State 72
 
-État 77
+   30 While: tWHILE tOP E tCP $@5 • Body
 
-   25 Else: tELSE $@2 Body •
+    tOB  shift, and go to state 15
 
-    $défaut  réduction par utilisation de la règle 25 (Else)
+    Body  go to state 74
+
+
+State 73
+
+   25 If: tIF tOP E tCP $@2 Body • $@3 Else
+
+    $default  reduce using rule 24 ($@3)
+
+    $@3  go to state 75
+
+
+State 74
+
+   30 While: tWHILE tOP E tCP $@5 Body •
+
+    $default  reduce using rule 30 (While)
+
+
+State 75
+
+   25 If: tIF tOP E tCP $@2 Body $@3 • Else
+
+    tELSE  shift, and go to state 76
+
+    $default  reduce using rule 28 (Else)
+
+    Else  go to state 77
+
+
+State 76
+
+   27 Else: tELSE • $@4 Body
+
+    $default  reduce using rule 26 ($@4)
+
+    $@4  go to state 78
+
+
+State 77
+
+   25 If: tIF tOP E tCP $@2 Body $@3 Else •
+
+    $default  reduce using rule 25 (If)
+
+
+State 78
+
+   27 Else: tELSE $@4 • Body
+
+    tOB  shift, and go to state 15
+
+    Body  go to state 79
+
+
+State 79
+
+   27 Else: tELSE $@4 Body •
+
+    $default  reduce using rule 27 (Else)

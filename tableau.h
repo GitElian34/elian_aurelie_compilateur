@@ -5,6 +5,7 @@
 
 
 // Fonctions pour gérer le tableau
+int current_depth ;
 void initialiser_tableau();
 void afficher_tableau();
 int getTailleDeb() ; 

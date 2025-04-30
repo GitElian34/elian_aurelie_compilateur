@@ -7,7 +7,7 @@ void yyerror(char *s);
 %}
 
 
-%union { int nb; nt ligne2; int ligne; char name[128]; }
+%union { int nb; int ligne2; int ligne; char name[128]; }
 
 %token tINT tOP tCP tOB tCB tAS tSEM tCOMA tPLUS tMINUS tDIV tMUL tELSE tOR tAND tVOID tEQ tINFOREQ tSUP tSUPOREQ tINF
 
@@ -35,7 +35,7 @@ Args :  tINT tID  ArgsM | ;
 
 ArgsM : tCOMA tINT tID ArgsM | ;
 
-Body : tOB{incr_depth()} Lins tCB {supprimer_par_profondeur(current_depth);decr_depth(); } ;
+Body : tOB{incr_depth();} Lins tCB {supprimer_par_profondeur(current_depth);decr_depth(); } ;
 
 Lins : Ins Lins | ;
 
@@ -61,7 +61,7 @@ Decla1 :
     | tID tAS E {
              if (ajouter_element_deb($1)) {
                 printf("Ajout de la variable %s au tableau\n", $1);
-                ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin(); )
+                ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());
                 //assembleur different
             }
         };
@@ -76,8 +76,8 @@ If : tIF  tOP E  tCP  {ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = tai
         patch( $1, $<nb>8+1);
     }};
 
-Else : tELSE {ajouter_instruction("JMP",-1,-1,-1)  $<nb>1 = taille_actuelle_asm;   }   {printf("else\n");}  
-      Body{patch($<nb>1, taille_actuelle_asm + 1);} |{$<nb>$ = -1} ; // est ce que $1 est reconnu ??????
+Else : tELSE {ajouter_instruction("JMP",-1,-1,-1);  $<nb>1 = taille_actuelle_asm;}    
+      Body{patch($<nb>1, taille_actuelle_asm + 1);} |{$<nb>$ = -1;}  // est ce que $1 est reconnu ??????
 
 While : tWHILE tOP E  tCP  {{ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = taille_actuelle_asm; } }  
         Body {ajouter_instruction("JMP",-1,$1,-1);

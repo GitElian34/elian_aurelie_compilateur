@@ -1,50 +1,51 @@
 #include "asm_ins.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-struct instruction tableau [TAILLE_TABLEAU]; // Tableau de 256 cases
-int taille_actuelle_asm= 0;  
-  // Nombre d'éléments dans le tableau
+struct instruction instruction_table[TAILLE_TABLEAU]; // Tableau de 256 cases
+int taille_actuelle_asm = 0;  
 
 // Initialisation du tableau avec des valeurs de 0 à 255 (ou vide selon besoin)
-void initialiser_tableau() {
+void initialiser_instruction_table() {
     taille_actuelle_asm = 0; 
-     // Vide au départsq
+    // Vide au départ
 }
 
 // Affichage du tableau
-void afficher_tableau() {
+void afficher_instruction_table() {
     printf("Tableau [%d elements]:\n", taille_actuelle_asm);
     for (int i = 0; i < taille_actuelle_asm; i++) {
-        printf("%d ", tableau[i]);
+        printf("%s (res: %d, nb1: %d, nb2: %d)\n", 
+            instruction_table[i].name, instruction_table[i].res, instruction_table[i].nb1, instruction_table[i].nb2);
     }
     printf("\n");
 }
-void patch(int line_if, int new_line){
-    tableau[line_if].nb2 =new_line;
 
+void patch(int line_if, int new_line) {
+    instruction_table[line_if].nb2 = new_line;
 }
 
 // Ajout d'un élément au tableau
-int ajouter_instruction(char val[32],int resultat, int nbre1, int nbre2){
+void ajouter_instruction(char *val, int resultat, int nbre1, int nbre2) {
     if (taille_actuelle_asm >= TAILLE_TABLEAU) {
         printf("Erreur : le tableau est plein.\n");
-        return 0; // Échec
+        return;
     }
-    tableau[taille_actuelle_asm].name = strdup(val);
-    tableau[taille_actuelle_asm].res = resultat;
-    tableau[taille_actuelle_asm].nb1 =nbre1;
-    tableau[taille_actuelle_asm].nb2 = nbre2;
-    taille_actuelle_asm += 1 ;
-    return 1; // Succès
+    instruction_table[taille_actuelle_asm].name = strdup(val);
+    instruction_table[taille_actuelle_asm].res = resultat;
+    instruction_table[taille_actuelle_asm].nb1 = nbre1;
+    instruction_table[taille_actuelle_asm].nb2 = nbre2;
+    taille_actuelle_asm += 1;
 }
 
-
 // Suppression d'un élément du tableau
-int supprimer_instruction( char val[32]) {
+void supprimer_instruction(char *val) {
     int index = -1;
 
     // Recherche de l'élément
     for (int i = 0; i < taille_actuelle_asm; i++) {
-        if (tableau[i].name == val) {
+        if (strcmp(instruction_table[i].name, val) == 0) {
             index = i;
             break;
         }
@@ -52,16 +53,17 @@ int supprimer_instruction( char val[32]) {
 
     if (index == -1) {
         printf("Erreur : valeur non trouvée.\n");
-        return 0; // Échec
+         // Échec
     }
 
-    // Décalage des éléments pour combler le trou
-    for (int i = index; i > taille_actuelle_asm ; i++) {
-        tableau[i] = tableau[i + 1];
+    // Libération de la mémoire allouée pour le nom
+    free(instruction_table[index].name);
 
+    // Décalage des éléments pour combler le trou
+    for (int i = index; i < taille_actuelle_asm - 1; i++) {
+        instruction_table[i] = instruction_table[i + 1];
     }
 
     taille_actuelle_asm--; // Réduction de la taille
-    return 1; // Succès
+     // Succès
 }
-

@@ -4,10 +4,24 @@
 #include "tableau.h"
 #include "asm_ins.h"
 void yyerror(char *s);
+
+void incr_depth(void);
+void decr_depth(void);
+void supprimer_par_profondeur(int profondeur);
+int getTailleDeb(void);
+int getTailleFin(void);
+void supprimer_dernier_element();
+void ajouter_element_deb(char *id);
+void ajouter_element_fin(char *id);
+//void supprimer_instruction ( char val[32]);
+void ajouter_instruction(char * nom, int res, int op1, int op2);
+void patch(int index, int valeur);
 %}
-
-
-%union { int nb; int ligne2; int ligne; char name[128]; }
+%union { int nb; 
+int ligne2;
+ int ligne;
+  char name[128];
+   }
 
 %token tINT tOP tCP tOB tCB tAS tSEM tCOMA tPLUS tMINUS tDIV tMUL tELSE tOR tAND tVOID tEQ tINFOREQ tSUP tSUPOREQ tINF
 
@@ -53,13 +67,13 @@ Decla : tINT Decla1 DeclaS tSEM ;
 
 Decla1 :
       tID  { 
-            if (ajouter_element_deb($1)) {
+            ajouter_element_deb($1) ; {
                 printf("Ajout de la variable %s au tableau\n", $1);
                 
             }
         }
     | tID tAS E {
-             if (ajouter_element_deb($1)) {
+                ajouter_element_deb($1); {
                 printf("Ajout de la variable %s au tableau\n", $1);
                 ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());
                 //assembleur different
@@ -90,7 +104,7 @@ While : tWHILE tOP E  tCP  {{ajouter_instruction("JMF",-1,getTailleFin(),-1); $1
 
 
 E :   tNB {ajouter_element_fin("temp");}
-    | tID  {ajouter_element_debut($1);ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin()); 
+    | tID  {ajouter_element_deb($1);ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin()); 
     }
     | E tPLUS E {ajouter_instruction("ADD",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
     | E tMUL E {ajouter_instruction("MUL",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}

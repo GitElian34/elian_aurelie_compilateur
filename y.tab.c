@@ -75,7 +75,19 @@
 #include "asm_ins.h"
 void yyerror(char *s);
 
-#line 79 "y.tab.c"
+void incr_depth(void);
+void decr_depth(void);
+void supprimer_par_profondeur(int profondeur);
+int getTailleDeb(void);
+int getTailleFin(void);
+void supprimer_dernier_element();
+void ajouter_element_deb(char *id);
+void ajouter_element_fin(char *id);
+//void supprimer_instruction ( char val[32]);
+void ajouter_instruction(char * nom, int res, int op1, int op2);
+void patch(int index, int valeur);
+
+#line 91 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -182,10 +194,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "compilateur.y"
- int nb; int ligne2; int ligne; char name[128]; 
+#line 20 "compilateur.y"
+ int nb; 
+int ligne2;
+ int ligne;
+  char name[128];
+   
 
-#line 189 "y.tab.c"
+#line 205 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -643,11 +659,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    28,    28,    30,    30,    32,    34,    34,    36,    36,
-      38,    38,    40,    40,    43,    46,    47,    48,    50,    52,
-      55,    61,    69,    69,    72,    74,    72,    79,    79,    80,
-      82,    82,    92,    93,    95,    96,    97,    98,    99,   100,
-     101,   102,   103
+       0,    42,    42,    44,    44,    46,    48,    48,    50,    50,
+      52,    52,    54,    54,    57,    60,    61,    62,    64,    66,
+      69,    75,    83,    83,    86,    88,    86,    93,    93,    94,
+      96,    96,   106,   107,   109,   110,   111,   112,   113,   114,
+     115,   116,   117
 };
 #endif
 
@@ -1262,154 +1278,154 @@ yyreduce:
   switch (yyn)
     {
   case 5: /* Fun: tINT tID tOP Args tCP Body  */
-#line 32 "compilateur.y"
+#line 46 "compilateur.y"
                                  {printf("function %s!\n", (yyvsp[-4].name)); }
-#line 1268 "y.tab.c"
+#line 1284 "y.tab.c"
     break;
 
   case 10: /* $@1: %empty  */
-#line 38 "compilateur.y"
+#line 52 "compilateur.y"
           {incr_depth();}
-#line 1274 "y.tab.c"
+#line 1290 "y.tab.c"
     break;
 
   case 11: /* Body: tOB $@1 Lins tCB  */
-#line 38 "compilateur.y"
+#line 52 "compilateur.y"
                                    {supprimer_par_profondeur(current_depth);decr_depth(); }
-#line 1280 "y.tab.c"
+#line 1296 "y.tab.c"
     break;
 
   case 20: /* Decla1: tID  */
-#line 55 "compilateur.y"
+#line 69 "compilateur.y"
            { 
-            if (ajouter_element_deb((yyvsp[0].name))) {
+            ajouter_element_deb((yyvsp[0].name)) ; {
                 printf("Ajout de la variable %s au tableau\n", (yyvsp[0].name));
                 
             }
         }
-#line 1291 "y.tab.c"
+#line 1307 "y.tab.c"
     break;
 
   case 21: /* Decla1: tID tAS E  */
-#line 61 "compilateur.y"
+#line 75 "compilateur.y"
                 {
-             if (ajouter_element_deb((yyvsp[-2].name))) {
+                ajouter_element_deb((yyvsp[-2].name)); {
                 printf("Ajout de la variable %s au tableau\n", (yyvsp[-2].name));
                 ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());
                 //assembleur different
             }
         }
-#line 1303 "y.tab.c"
+#line 1319 "y.tab.c"
     break;
 
   case 24: /* $@2: %empty  */
-#line 72 "compilateur.y"
+#line 86 "compilateur.y"
                       {ajouter_instruction("JMF",-1,getTailleFin(),-1); (yyvsp[-3].ligne) = taille_actuelle_asm; }
-#line 1309 "y.tab.c"
+#line 1325 "y.tab.c"
     break;
 
   case 25: /* $@3: %empty  */
-#line 74 "compilateur.y"
+#line 88 "compilateur.y"
          {patch((yyvsp[-5].ligne), taille_actuelle_asm+1); }
-#line 1315 "y.tab.c"
+#line 1331 "y.tab.c"
     break;
 
   case 26: /* If: tIF tOP E tCP $@2 Body $@3 Else  */
-#line 75 "compilateur.y"
+#line 89 "compilateur.y"
          {if( (yyvsp[0].nb)!= -1 ){
         patch( (yyvsp[-7].ligne), (yyvsp[0].nb)+1);
     }}
-#line 1323 "y.tab.c"
+#line 1339 "y.tab.c"
     break;
 
   case 27: /* $@4: %empty  */
-#line 79 "compilateur.y"
+#line 93 "compilateur.y"
              {ajouter_instruction("JMP",-1,-1,-1);  (yyvsp[0].nb) = taille_actuelle_asm;}
-#line 1329 "y.tab.c"
+#line 1345 "y.tab.c"
     break;
 
   case 28: /* Else: tELSE $@4 Body  */
-#line 80 "compilateur.y"
+#line 94 "compilateur.y"
           {patch((yyvsp[-2].nb), taille_actuelle_asm + 1);}
-#line 1335 "y.tab.c"
+#line 1351 "y.tab.c"
     break;
 
   case 29: /* Else: %empty  */
-#line 80 "compilateur.y"
+#line 94 "compilateur.y"
                                                      {(yyval.nb) = -1;}
-#line 1341 "y.tab.c"
+#line 1357 "y.tab.c"
     break;
 
   case 30: /* $@5: %empty  */
-#line 82 "compilateur.y"
+#line 96 "compilateur.y"
                            {{ajouter_instruction("JMF",-1,getTailleFin(),-1); (yyvsp[-3].ligne2) = taille_actuelle_asm; } }
-#line 1347 "y.tab.c"
+#line 1363 "y.tab.c"
     break;
 
   case 31: /* While: tWHILE tOP E tCP $@5 Body  */
-#line 83 "compilateur.y"
+#line 97 "compilateur.y"
              {ajouter_instruction("JMP",-1,(yyvsp[-5].ligne2),-1);
         patch((yyvsp[-5].ligne2), taille_actuelle_asm+1); }
-#line 1354 "y.tab.c"
+#line 1370 "y.tab.c"
     break;
 
   case 32: /* E: tNB  */
-#line 92 "compilateur.y"
+#line 106 "compilateur.y"
           {ajouter_element_fin("temp");}
-#line 1360 "y.tab.c"
+#line 1376 "y.tab.c"
     break;
 
   case 33: /* E: tID  */
-#line 93 "compilateur.y"
-           {ajouter_element_debut((yyvsp[0].name));ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin()); 
+#line 107 "compilateur.y"
+           {ajouter_element_deb((yyvsp[0].name));ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin()); 
     }
-#line 1367 "y.tab.c"
+#line 1383 "y.tab.c"
     break;
 
   case 34: /* E: E tPLUS E  */
-#line 95 "compilateur.y"
+#line 109 "compilateur.y"
                 {ajouter_instruction("ADD",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
-#line 1373 "y.tab.c"
+#line 1389 "y.tab.c"
     break;
 
   case 35: /* E: E tMUL E  */
-#line 96 "compilateur.y"
+#line 110 "compilateur.y"
                {ajouter_instruction("MUL",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
-#line 1379 "y.tab.c"
+#line 1395 "y.tab.c"
     break;
 
   case 36: /* E: E tMINUS E  */
-#line 97 "compilateur.y"
+#line 111 "compilateur.y"
                  {ajouter_instruction("SOU",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
-#line 1385 "y.tab.c"
+#line 1401 "y.tab.c"
     break;
 
   case 37: /* E: E tDIV E  */
-#line 98 "compilateur.y"
+#line 112 "compilateur.y"
                {ajouter_instruction("DIV",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
-#line 1391 "y.tab.c"
+#line 1407 "y.tab.c"
     break;
 
   case 38: /* E: E tEQ E  */
-#line 99 "compilateur.y"
+#line 113 "compilateur.y"
               {ajouter_instruction("EQU",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
-#line 1397 "y.tab.c"
+#line 1413 "y.tab.c"
     break;
 
   case 39: /* E: E tSUP E  */
-#line 100 "compilateur.y"
+#line 114 "compilateur.y"
               {ajouter_instruction("SUP",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
-#line 1403 "y.tab.c"
+#line 1419 "y.tab.c"
     break;
 
   case 41: /* E: E tINF E  */
-#line 102 "compilateur.y"
+#line 116 "compilateur.y"
                {ajouter_instruction("INF",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
-#line 1409 "y.tab.c"
+#line 1425 "y.tab.c"
     break;
 
 
-#line 1413 "y.tab.c"
+#line 1429 "y.tab.c"
 
       default: break;
     }
@@ -1602,7 +1618,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 116 "compilateur.y"
+#line 130 "compilateur.y"
 
 
 /*

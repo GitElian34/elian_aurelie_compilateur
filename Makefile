@@ -21,6 +21,6 @@ clean:
 	rm -rf compilateur lex.yy.c y.tab.c
 
 test: compilateur
-	./compilateur < sample.c
+	./compilateur < sample1.c
 
 

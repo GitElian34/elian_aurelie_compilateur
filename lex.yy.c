@@ -895,12 +895,12 @@ return tWHILE ;
 case 25:
 YY_RULE_SETUP
 #line 59 "compilateur.l"
-return tIF;
+{yylval.ligne = atoi(yytext); return tIF; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 60 "compilateur.l"
-return tELSE;
+{yylval.ligne2 = atoi(yytext); return tELSE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP

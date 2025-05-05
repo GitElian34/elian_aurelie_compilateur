@@ -117,10 +117,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "compilateur.y"
- int nb; int ligne2; int ligne; char name[128]; 
+#line 20 "compilateur.y"
+ int nb; 
+int ligne2;
+ int ligne;
+  char name[128];
+   
 
-#line 124 "y.tab.h"
+#line 128 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

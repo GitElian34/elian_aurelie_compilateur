@@ -3,16 +3,23 @@
 #include <stdio.h>
 #include "tableau.h"
 #include "asm_ins.h"
-void yyerror(char *s);
 
+
+void yyerror(char *s);
+void afficher_tableau(void);
 void incr_depth(void);
 void decr_depth(void);
 void supprimer_par_profondeur(int profondeur);
 int getTailleDeb(void);
 int getTailleFin(void);
 void supprimer_dernier_element();
-void ajouter_element_deb(char *id);
-void ajouter_element_fin(char *id);
+int get_adresse_by_name(const char *name);
+int get_value_by_name(const char *name);
+int get_value_by_adresse(int adresse);
+void set_value_by_name(const char *name,int value );
+void ajouter_element_deb(char *id,int value);
+void ajouter_element_fin(char *id,int value);
+void afficher_instruction_table(void);
 //void supprimer_instruction ( char val[32]);
 void ajouter_instruction(char * nom, int res, int op1, int op2);
 void patch(int index, int valeur);
@@ -32,7 +39,8 @@ int ligne2;
 
 %token<nb> tNB
 %left tEQ
-%left tPLUS tMINUS  /* Plus faible priorité */
+%nonassoc tSUP tINF tSUPOREQ tINFOREQ  /* Non-associatifs, priorité moyenne */
+%left tPLUS tMINUS                      /* Priorité plus basse */
 %left tMUL tDIV     /* Priorité plus élevée que + et - */
 
 %start Program
@@ -43,15 +51,15 @@ Program : Funs ;
 
 Funs : Fun Funs | Fun;
 
-Fun : tINT tID tOP Args tCP Body {printf("function %s!\n", $2); } ;
+Fun :  tINT{printf("function1!\n"); } tID tOP Args tCP Body {printf("function!\n"); } ;
 
 Args :  tINT tID  ArgsM | ;
 
 ArgsM : tCOMA tINT tID ArgsM | ;
 
-Body : tOB{incr_depth();} Lins tCB {supprimer_par_profondeur(current_depth);decr_depth(); } ;
+Body : {incr_depth();printf("body1!\n");}tOB{incr_depth();} Lins tCB {afficher_tableau();afficher_instruction_table();supprimer_par_profondeur(current_depth);decr_depth(); } ;
 
-Lins : Ins Lins | ;
+Lins : {printf("instruc");}Ins Lins |{printf("instruc");} ;
 
 Ins :
       Aff
@@ -61,21 +69,31 @@ Ins :
     | While
     | Decla ;
 
-Aff : tID tAS E tSEM ;
+Aff : {printf("instruc1");}tID tAS E tSEM{
+                 
+                printf("Ajout de la variable %s au tableau\n", $2);
+                ajouter_instruction("COP",-1, get_adresse_by_name($2), getTailleFin()); ;set_value_by_name($2,get_value_by_adresse(getTailleFin()+1) );
+                //assembleur different
+            
+            } ; //DES TRUCS A FAIRE ICI
 
-Decla : tINT Decla1 DeclaS tSEM ;
+Decla : {printf("instruc2");}tINT Decla1 DeclaS tSEM ;
 
 Decla1 :
       tID  { 
-            ajouter_element_deb($1) ; {
+            ajouter_element_deb($1,-1) ; {
                 printf("Ajout de la variable %s au tableau\n", $1);
                 
             }
         }
     | tID tAS E {
-                ajouter_element_deb($1); {
+                
+                ajouter_element_deb($1,get_value_by_adresse(getTailleFin()+1)); {
+                ajouter_instruction("COP",-1, getTailleDeb()-1, getTailleFin()); // -1 car on vient d'ajouter la variable
                 printf("Ajout de la variable %s au tableau\n", $1);
-                ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());
+                supprimer_dernier_element() ;
+                //printf("La taille du tableau est :  %d     \n", getTailleDeb());
+                
                 //assembleur different
             }
         };
@@ -103,10 +121,8 @@ While : tWHILE tOP E  tCP  {{ajouter_instruction("JMF",-1,getTailleFin(),-1); $1
 
 
 
-E :   tNB {ajouter_element_fin("temp");}
-    | tID  {ajouter_element_deb($1);ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin()); 
-    }
-    | E tPLUS E {ajouter_instruction("ADD",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
+E : 
+     E tPLUS E {ajouter_instruction("ADD",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
     | E tMUL E {ajouter_instruction("MUL",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
     | E tMINUS E {ajouter_instruction("SOU",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
     | E tDIV E {ajouter_instruction("DIV",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element();}
@@ -115,6 +131,10 @@ E :   tNB {ajouter_element_fin("temp");}
     | E tSUPOREQ E
     | E tINF E {ajouter_instruction("INF",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
     | E tINFOREQ E
+    | tNB {ajouter_element_fin("temp",$1);ajouter_instruction("AFC",-1,getTailleFin(), $1);}
+    | tID  {ajouter_element_fin("temp",get_value_by_name($1)); ajouter_instruction("COP",-1,getTailleFin(), get_adresse_by_name($1));set_value_by_name($1,get_value_by_adresse(getTailleFin()+1) );
+    //| tID  {ajouter_element_deb($1);ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());  
+    }
     ;
 
 

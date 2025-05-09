@@ -4,6 +4,8 @@
 #include <stdio.h>
 
 #define TAILLE_TABLEAU 256
+#define INT_NULL  2222222
+
 
 
 struct symbole symbol_table[TAILLE_TABLEAU]; // Tableau de 256 cases
@@ -12,7 +14,7 @@ int taille_fin = 255;
 int current_depth = 0;   // Nombre d'éléments dans le tableau
 
 // Initialisation du tableau avec des valeurs de 0 à 255 (ou vide selon besoin)
-void initialiser_tableau() {
+void initialiser_symbol_table() {
     taille_actuelle = 0;
     taille_fin = 255; // Vide au départ
 }
@@ -35,16 +37,82 @@ int getTailleFin() {
 
 // Affichage du tableau
 void afficher_tableau() {
-    printf("Tableau [%d elements]:\n", taille_actuelle);
+    printf("\n=== SYMBOL TABLE ===\n");
+    printf("Current depth: %d\n", current_depth);
+    
+    // Partie début (variables locales)
+    printf("\nLocal variables [%d]:\n", taille_actuelle);
     for (int i = 0; i < taille_actuelle; i++) {
-        printf("Nom: %s, Adresse: %d, Profondeur: %d\n", 
-            symbol_table[i].name, symbol_table[i].adresse, symbol_table[i].depth);
+        printf("[%d] %s (addr:%d, depth:%d , value:%d)\n", 
+              i, symbol_table[i].name, symbol_table[i].adresse, symbol_table[i].depth,symbol_table[i].value);
     }
-    printf("\n");
+    
+    // Partie fin (arguments)
+    printf("\nArguments [%d]:\n", TAILLE_TABLEAU - taille_fin - 1);
+    for (int i = taille_fin + 1; i < TAILLE_TABLEAU; i++) {
+        printf("[%d] %s (addr:%d, depth:%d, value:%d)\n", 
+              i, symbol_table[i].name, symbol_table[i].adresse, symbol_table[i].depth,symbol_table[i].value);
+    }
+    printf("==================\n\n");
+}
+int get_adresse_by_name(const char *name) {
+    // Recherche dans la partie locale (début du tableau)
+    for (int i = 0; i < taille_actuelle; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0) {
+            return symbol_table[i].adresse;
+        }
+    }
+     // Variable non trouvée
+    printf("Erreur: Variable '%s' non trouvée dans la table des symboles\n", name);
+    return -1;
 }
 
+
+int get_value_by_name(const char *name) {
+    // Recherche dans la partie locale (début du tableau)
+    for (int i = 0; i < taille_actuelle; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0) {
+            return symbol_table[i].value;
+        }
+    }
+     // Variable non trouvée
+    printf("Erreur: Variable '%s' non trouvée dans la table des symboles\n", name);
+    return -1;
+}
+
+void set_value_by_name(const char *name,int value ) {
+    // Recherche dans la partie locale (début du tableau)
+    for (int i = 0; i < taille_actuelle; i++) {
+        if (strcmp(symbol_table[i].name, name) == 0) {
+             symbol_table[i].value = value;
+        }
+    }
+     // Variable non trouvée
+    printf("Erreur: Variable '%s' non trouvée dans la table des symboles\n", name);
+    
+}
+
+int get_value_by_adresse(int adresse) {
+    // 1. Recherche dans la partie locale (début du tableau)
+    for (int i = 0; i < taille_actuelle; i++) {
+        if (symbol_table[i].adresse == adresse) {
+            return symbol_table[i].value;
+        }
+    }
+    
+    // 2. Recherche dans la partie arguments (fin du tableau)
+    for (int i = taille_fin + 1; i < TAILLE_TABLEAU; i++) {
+        if (symbol_table[i].adresse == adresse) {
+            return symbol_table[i].value;
+        }
+    }
+    
+    // 3. Si non trouvé dans les deux parties
+    printf("Erreur: Aucune variable à l'adresse %d\n", adresse);
+    return -1;
+}
 // Ajout d'un élément au début du tableau
-void ajouter_element_deb(char *val) {
+void ajouter_element_deb(char *val,int value) {
     if (taille_actuelle >= taille_fin) {
         printf("Erreur : le tableau est plein.\n");
          // Échec
@@ -52,13 +120,15 @@ void ajouter_element_deb(char *val) {
     symbol_table[taille_actuelle].name = strdup(val);
     symbol_table[taille_actuelle].adresse = taille_actuelle;
     symbol_table[taille_actuelle].depth = current_depth;
+    symbol_table[taille_actuelle].value = value;
     
     taille_actuelle += 1;
+   //printf("La taille du tableau A AUGMENTE !!!!! :  %d     \n", getTailleDeb());
      // Succès
 }
 
 // Ajout d'un élément à la fin du tableau
-void ajouter_element_fin(char *val) {
+void ajouter_element_fin(char *val,int value) {
     if (taille_actuelle >= taille_fin) {
         printf("Erreur : le tableau est plein.\n");
          // Échec
@@ -66,6 +136,7 @@ void ajouter_element_fin(char *val) {
     symbol_table[taille_fin].name = strdup(val);
     symbol_table[taille_fin].adresse = taille_fin;
     symbol_table[taille_fin].depth = current_depth;
+    symbol_table[taille_fin].value = value;
     taille_fin -= 1;
      // Succès
 }

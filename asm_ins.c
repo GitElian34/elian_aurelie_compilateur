@@ -14,6 +14,7 @@ void initialiser_instruction_table() {
 
 // Affichage du tableau
 void afficher_instruction_table() {
+    printf("##############################Tableau d'instructions##########################################\n");
     printf("Tableau [%d elements]:\n", taille_actuelle_asm);
     for (int i = 0; i < taille_actuelle_asm; i++) {
         printf("%s (res: %d, nb1: %d, nb2: %d)\n", 

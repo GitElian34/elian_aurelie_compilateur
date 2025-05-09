@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+#ifndef YY_YY_COMPILATEUR_TAB_H_INCLUDED
+# define YY_YY_COMPILATEUR_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -82,49 +82,19 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
-#define tINT 258
-#define tOP 259
-#define tCP 260
-#define tOB 261
-#define tCB 262
-#define tAS 263
-#define tSEM 264
-#define tCOMA 265
-#define tPLUS 266
-#define tMINUS 267
-#define tDIV 268
-#define tMUL 269
-#define tELSE 270
-#define tOR 271
-#define tAND 272
-#define tVOID 273
-#define tEQ 274
-#define tINFOREQ 275
-#define tSUP 276
-#define tSUPOREQ 277
-#define tINF 278
-#define tID 279
-#define tIF 280
-#define tWHILE 281
-#define tNB 282
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "compilateur.y"
+#line 20 "compilateur.y"
  int nb; 
 int ligne2;
  int ligne;
   char name[128];
    
 
-#line 128 "y.tab.h"
+#line 98 "compilateur.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -139,4 +109,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#endif /* !YY_YY_COMPILATEUR_TAB_H_INCLUDED  */

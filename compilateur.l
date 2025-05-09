@@ -31,10 +31,10 @@ int               return tINT;
 	
 	*/
 {D}+              {yylval.nb = atoi(yytext); return tNB; }
-
+\r?\n    { }  /* Gère à la fois Unix et Windows */
 " "               { }
 \t                { }
-\n                { }
+
 ";"               return tSEM;
 ","               return tCOMA;
 "="               return tAS;

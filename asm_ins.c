@@ -5,13 +5,19 @@
 
 struct instruction instruction_table[TAILLE_TABLEAU]; // Tableau de 256 cases
 int taille_actuelle_asm = 0;  
-
+extern int while_start= 0 ;
 // Initialisation du tableau avec des valeurs de 0 à 255 (ou vide selon besoin)
 void initialiser_instruction_table() {
     taille_actuelle_asm = 0; 
     // Vide au départ
 }
+int Get_whileStart(void){
+    return  while_start ;
+}
 
+void Set_whileStart(int val){
+    while_start = val ;
+}
 // Affichage du tableau
 void afficher_instruction_table() {
     printf("##############################Tableau d'instructions##########################################\n");
@@ -24,7 +30,9 @@ void afficher_instruction_table() {
 }
 
 void patch(int line_if, int new_line) {
-    instruction_table[line_if].nb2 = new_line;
+    printf("Avant %d avec %d \n\n\n\n\n\n\n",instruction_table[line_if].nb2,new_line);
+    instruction_table[line_if].nb1 = new_line;
+    printf("Après %d\n",instruction_table[line_if-1].nb1);
 }
 
 // Ajout d'un élément au tableau

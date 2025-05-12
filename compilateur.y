@@ -12,6 +12,8 @@ void decr_depth(void);
 void supprimer_par_profondeur(int profondeur);
 int getTailleDeb(void);
 int getTailleFin(void);
+int Get_whileStart(void);
+void Set_whileStart(int);
 void supprimer_dernier_element();
 int get_adresse_by_name(const char *name);
 int get_value_by_name(const char *name);
@@ -101,18 +103,22 @@ Decla1 :
 DeclaS : | tCOMA Decla1 DeclaS ;
 
 
-If : tIF  tOP E  tCP  {ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = taille_actuelle_asm; }  
+If : tIF{;afficher_tableau();}  tOP E  tCP  {ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = taille_actuelle_asm; }  
 
-    Body {patch($1, taille_actuelle_asm+1); }
-    Else {if( $<nb>8!= -1 ){
-        patch( $1, $<nb>8+1);
+    Body {patch($1, taille_actuelle_asm+1); printf("Le If à été PATCH à %d\n\n\n\n\n\n", (taille_actuelle_asm+1));printf("Depuis %d\n", $1);}
+    Else {if( $<nb>9!= -1 ){
+        
+        patch( $1, $<nb>9 + 1);
+
+        printf("Le If à été PATCH à BLOUBLI%d\n\n\n\n\n\n", ($<nb>9));
+       
     }};
 
-Else : tELSE {ajouter_instruction("JMP",-1,-1,-1);  $<nb>1 = taille_actuelle_asm;}    
+Else : tELSE {ajouter_instruction("JMP",-1,-1,-1);printf("111111111111111111111\n\n\n\n\n");  $<nb>1 = taille_actuelle_asm ;}    
       Body{patch($<nb>1, taille_actuelle_asm + 1);} |{$<nb>$ = -1;}  // est ce que $1 est reconnu ??????
 
-While : tWHILE tOP E  tCP  {{ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = taille_actuelle_asm; } }  
-        Body {ajouter_instruction("JMP",-1,$1,-1);
+While : tWHILE{ Set_whileStart(taille_actuelle_asm+1);} tOP E  tCP  {{$1 = taille_actuelle_asm ;ajouter_instruction("JMF",-1, $1 ,-1);  } }  
+        Body {ajouter_instruction("JMP",-1,Get_whileStart(),-1);
         patch($1, taille_actuelle_asm+1); } ;
 
 

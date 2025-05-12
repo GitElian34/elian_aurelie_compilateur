@@ -58,28 +58,32 @@ Grammar
 
    29 $@8: ε
 
-   30 If: tIF tOP E tCP $@7 Body $@8 Else
+   30 $@9: ε
 
-   31 $@9: ε
+   31 If: tIF $@7 tOP E tCP $@8 Body $@9 Else
 
-   32 Else: tELSE $@9 Body
-   33     | ε
+   32 $@10: ε
 
-   34 $@10: ε
+   33 Else: tELSE $@10 Body
+   34     | ε
 
-   35 While: tWHILE tOP E tCP $@10 Body
+   35 $@11: ε
 
-   36 E: E tPLUS E
-   37  | E tMUL E
-   38  | E tMINUS E
-   39  | E tDIV E
-   40  | E tEQ E
-   41  | E tSUP E
-   42  | E tSUPOREQ E
-   43  | E tINF E
-   44  | E tINFOREQ E
-   45  | tNB
-   46  | tID
+   36 $@12: ε
+
+   37 While: tWHILE $@11 tOP E tCP $@12 Body
+
+   38 E: E tPLUS E
+   39  | E tMUL E
+   40  | E tMINUS E
+   41  | E tDIV E
+   42  | E tEQ E
+   43  | E tSUP E
+   44  | E tSUPOREQ E
+   45  | E tINF E
+   46  | E tINFOREQ E
+   47  | tNB
+   48  | tID
 
 
 Terminals, with rules where they appear
@@ -87,30 +91,30 @@ Terminals, with rules where they appear
     $end (0) 0
     error (256)
     tINT (258) 5 6 8 23
-    tOP (259) 5 30 35
-    tCP (260) 5 30 35
+    tOP (259) 5 31 37
+    tCP (260) 5 31 37
     tOB (261) 12
     tCB (262) 12
     tAS (263) 21 25
     tSEM (264) 21 23
     tCOMA (265) 8 27
-    tPLUS (266) 36
-    tMINUS (267) 38
-    tDIV (268) 39
-    tMUL (269) 37
-    tELSE (270) 32
+    tPLUS (266) 38
+    tMINUS (267) 40
+    tDIV (268) 41
+    tMUL (269) 39
+    tELSE (270) 33
     tOR (271)
     tAND (272)
     tVOID (273)
-    tEQ (274) 40
-    tINFOREQ (275) 44
-    tSUP (276) 41
-    tSUPOREQ (277) 42
-    tINF (278) 43
-    tID <name> (279) 5 6 8 21 24 25 46
-    tIF <ligne> (280) 30
-    tWHILE <ligne2> (281) 35
-    tNB <nb> (282) 45
+    tEQ (274) 42
+    tINFOREQ (275) 46
+    tSUP (276) 43
+    tSUPOREQ (277) 44
+    tINF (278) 45
+    tID <name> (279) 5 6 8 21 24 25 48
+    tIF <ligne> (280) 31
+    tWHILE <ligne2> (281) 37
+    tNB <nb> (282) 47
 
 
 Nonterminals, with rules where they appear
@@ -137,7 +141,7 @@ Nonterminals, with rules where they appear
         on right: 6 8
     Body (35)
         on left: 12
-        on right: 5 30 32 35
+        on right: 5 31 33 37
     $@2 (36)
         on left: 10
         on right: 12
@@ -172,29 +176,35 @@ Nonterminals, with rules where they appear
         on left: 26 27
         on right: 23 27
     If (47)
-        on left: 30
+        on left: 31
         on right: 17
     $@7 (48)
         on left: 28
-        on right: 30
+        on right: 31
     $@8 (49)
         on left: 29
-        on right: 30
-    Else (50)
-        on left: 32 33
-        on right: 30
-    $@9 (51)
-        on left: 31
-        on right: 32
-    While (52)
-        on left: 35
+        on right: 31
+    $@9 (50)
+        on left: 30
+        on right: 31
+    Else (51)
+        on left: 33 34
+        on right: 31
+    $@10 (52)
+        on left: 32
+        on right: 33
+    While (53)
+        on left: 37
         on right: 18
-    $@10 (53)
-        on left: 34
-        on right: 35
-    E (54)
-        on left: 36 37 38 39 40 41 42 43 44 45 46
-        on right: 21 25 30 35 36 37 38 39 40 41 42 43 44
+    $@11 (54)
+        on left: 35
+        on right: 37
+    $@12 (55)
+        on left: 36
+        on right: 37
+    E (56)
+        on left: 38 39 40 41 42 43 44 45 46 47 48
+        on right: 21 25 31 37 38 39 40 41 42 43 44 45 46
 
 
 State 0
@@ -426,16 +436,20 @@ State 25
 
 State 26
 
-   30 If: tIF • tOP E tCP $@7 Body $@8 Else
+   31 If: tIF • $@7 tOP E tCP $@8 Body $@9 Else
 
-    tOP  shift, and go to state 35
+    $default  reduce using rule 28 ($@7)
+
+    $@7  go to state 35
 
 
 State 27
 
-   35 While: tWHILE • tOP E tCP $@10 Body
+   37 While: tWHILE • $@11 tOP E tCP $@12 Body
 
-    tOP  shift, and go to state 36
+    $default  reduce using rule 35 ($@11)
+
+    $@11  go to state 36
 
 
 State 28
@@ -493,22 +507,16 @@ State 34
 
 State 35
 
-   30 If: tIF tOP • E tCP $@7 Body $@8 Else
+   31 If: tIF $@7 • tOP E tCP $@8 Body $@9 Else
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 42
+    tOP  shift, and go to state 40
 
 
 State 36
 
-   35 While: tWHILE tOP • E tCP $@10 Body
+   37 While: tWHILE $@11 • tOP E tCP $@12 Body
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 43
+    tOP  shift, and go to state 41
 
 
 State 37
@@ -522,472 +530,491 @@ State 38
 
    21 Aff: $@5 tID • tAS E tSEM
 
-    tAS  shift, and go to state 44
+    tAS  shift, and go to state 42
 
 
 State 39
 
    23 Decla: $@6 tINT • Decla1 DeclaS tSEM
 
-    tID  shift, and go to state 45
+    tID  shift, and go to state 43
 
-    Decla1  go to state 46
+    Decla1  go to state 44
 
 
 State 40
 
-   46 E: tID •
+   31 If: tIF $@7 tOP • E tCP $@8 Body $@9 Else
 
-    $default  reduce using rule 46 (E)
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
+
+    E  go to state 47
 
 
 State 41
 
-   45 E: tNB •
+   37 While: tWHILE $@11 tOP • E tCP $@12 Body
 
-    $default  reduce using rule 45 (E)
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
+
+    E  go to state 48
 
 
 State 42
 
-   30 If: tIF tOP E • tCP $@7 Body $@8 Else
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   21 Aff: $@5 tID tAS • E tSEM
 
-    tCP       shift, and go to state 47
-    tPLUS     shift, and go to state 48
-    tMINUS    shift, and go to state 49
-    tDIV      shift, and go to state 50
-    tMUL      shift, and go to state 51
-    tEQ       shift, and go to state 52
-    tINFOREQ  shift, and go to state 53
-    tSUP      shift, and go to state 54
-    tSUPOREQ  shift, and go to state 55
-    tINF      shift, and go to state 56
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
+
+    E  go to state 49
 
 
 State 43
 
-   35 While: tWHILE tOP E • tCP $@10 Body
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
-
-    tCP       shift, and go to state 57
-    tPLUS     shift, and go to state 48
-    tMINUS    shift, and go to state 49
-    tDIV      shift, and go to state 50
-    tMUL      shift, and go to state 51
-    tEQ       shift, and go to state 52
-    tINFOREQ  shift, and go to state 53
-    tSUP      shift, and go to state 54
-    tSUPOREQ  shift, and go to state 55
-    tINF      shift, and go to state 56
-
-
-State 44
-
-   21 Aff: $@5 tID tAS • E tSEM
-
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 58
-
-
-State 45
-
    24 Decla1: tID •
    25       | tID • tAS E
 
-    tAS  shift, and go to state 59
+    tAS  shift, and go to state 50
 
     $default  reduce using rule 24 (Decla1)
 
 
-State 46
+State 44
 
    23 Decla: $@6 tINT Decla1 • DeclaS tSEM
 
-    tCOMA  shift, and go to state 60
+    tCOMA  shift, and go to state 51
 
     $default  reduce using rule 26 (DeclaS)
 
-    DeclaS  go to state 61
+    DeclaS  go to state 52
+
+
+State 45
+
+   48 E: tID •
+
+    $default  reduce using rule 48 (E)
+
+
+State 46
+
+   47 E: tNB •
+
+    $default  reduce using rule 47 (E)
 
 
 State 47
 
-   30 If: tIF tOP E tCP • $@7 Body $@8 Else
+   31 If: tIF $@7 tOP E • tCP $@8 Body $@9 Else
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    $default  reduce using rule 28 ($@7)
-
-    $@7  go to state 62
+    tCP       shift, and go to state 53
+    tPLUS     shift, and go to state 54
+    tMINUS    shift, and go to state 55
+    tDIV      shift, and go to state 56
+    tMUL      shift, and go to state 57
+    tEQ       shift, and go to state 58
+    tINFOREQ  shift, and go to state 59
+    tSUP      shift, and go to state 60
+    tSUPOREQ  shift, and go to state 61
+    tINF      shift, and go to state 62
 
 
 State 48
 
-   36 E: E tPLUS • E
+   37 While: tWHILE $@11 tOP E • tCP $@12 Body
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 63
+    tCP       shift, and go to state 63
+    tPLUS     shift, and go to state 54
+    tMINUS    shift, and go to state 55
+    tDIV      shift, and go to state 56
+    tMUL      shift, and go to state 57
+    tEQ       shift, and go to state 58
+    tINFOREQ  shift, and go to state 59
+    tSUP      shift, and go to state 60
+    tSUPOREQ  shift, and go to state 61
+    tINF      shift, and go to state 62
 
 
 State 49
 
-   38 E: E tMINUS • E
+   21 Aff: $@5 tID tAS E • tSEM
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 64
+    tSEM      shift, and go to state 64
+    tPLUS     shift, and go to state 54
+    tMINUS    shift, and go to state 55
+    tDIV      shift, and go to state 56
+    tMUL      shift, and go to state 57
+    tEQ       shift, and go to state 58
+    tINFOREQ  shift, and go to state 59
+    tSUP      shift, and go to state 60
+    tSUPOREQ  shift, and go to state 61
+    tINF      shift, and go to state 62
 
 
 State 50
 
-   39 E: E tDIV • E
+   25 Decla1: tID tAS • E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
     E  go to state 65
 
 
 State 51
 
-   37 E: E tMUL • E
+   27 DeclaS: tCOMA • Decla1 DeclaS
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 43
 
-    E  go to state 66
+    Decla1  go to state 66
 
 
 State 52
 
-   40 E: E tEQ • E
+   23 Decla: $@6 tINT Decla1 DeclaS • tSEM
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
-
-    E  go to state 67
+    tSEM  shift, and go to state 67
 
 
 State 53
 
-   44 E: E tINFOREQ • E
+   31 If: tIF $@7 tOP E tCP • $@8 Body $@9 Else
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    $default  reduce using rule 29 ($@8)
 
-    E  go to state 68
+    $@8  go to state 68
 
 
 State 54
 
-   41 E: E tSUP • E
+   38 E: E tPLUS • E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
     E  go to state 69
 
 
 State 55
 
-   42 E: E tSUPOREQ • E
+   40 E: E tMINUS • E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
     E  go to state 70
 
 
 State 56
 
-   43 E: E tINF • E
+   41 E: E tDIV • E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
     E  go to state 71
 
 
 State 57
 
-   35 While: tWHILE tOP E tCP • $@10 Body
+   39 E: E tMUL • E
 
-    $default  reduce using rule 34 ($@10)
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
-    $@10  go to state 72
+    E  go to state 72
 
 
 State 58
 
-   21 Aff: $@5 tID tAS E • tSEM
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   42 E: E tEQ • E
 
-    tSEM      shift, and go to state 73
-    tPLUS     shift, and go to state 48
-    tMINUS    shift, and go to state 49
-    tDIV      shift, and go to state 50
-    tMUL      shift, and go to state 51
-    tEQ       shift, and go to state 52
-    tINFOREQ  shift, and go to state 53
-    tSUP      shift, and go to state 54
-    tSUPOREQ  shift, and go to state 55
-    tINF      shift, and go to state 56
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
+
+    E  go to state 73
 
 
 State 59
 
-   25 Decla1: tID tAS • E
+   46 E: E tINFOREQ • E
 
-    tID  shift, and go to state 40
-    tNB  shift, and go to state 41
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
     E  go to state 74
 
 
 State 60
 
-   27 DeclaS: tCOMA • Decla1 DeclaS
+   43 E: E tSUP • E
 
     tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
-    Decla1  go to state 75
+    E  go to state 75
 
 
 State 61
 
-   23 Decla: $@6 tINT Decla1 DeclaS • tSEM
+   44 E: E tSUPOREQ • E
 
-    tSEM  shift, and go to state 76
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
+
+    E  go to state 76
 
 
 State 62
 
-   30 If: tIF tOP E tCP $@7 • Body $@8 Else
+   45 E: E tINF • E
 
-    $default  reduce using rule 10 ($@2)
+    tID  shift, and go to state 45
+    tNB  shift, and go to state 46
 
-    Body  go to state 77
-    $@2   go to state 17
+    E  go to state 77
 
 
 State 63
 
-   36 E: E • tPLUS E
-   36  | E tPLUS E •
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   37 While: tWHILE $@11 tOP E tCP • $@12 Body
 
-    tDIV  shift, and go to state 50
-    tMUL  shift, and go to state 51
+    $default  reduce using rule 36 ($@12)
 
-    $default  reduce using rule 36 (E)
+    $@12  go to state 78
 
 
 State 64
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   38  | E tMINUS E •
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   21 Aff: $@5 tID tAS E tSEM •
 
-    tDIV  shift, and go to state 50
-    tMUL  shift, and go to state 51
-
-    $default  reduce using rule 38 (E)
+    $default  reduce using rule 21 (Aff)
 
 
 State 65
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   39  | E tDIV E •
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   25 Decla1: tID tAS E •
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    $default  reduce using rule 39 (E)
+    tPLUS     shift, and go to state 54
+    tMINUS    shift, and go to state 55
+    tDIV      shift, and go to state 56
+    tMUL      shift, and go to state 57
+    tEQ       shift, and go to state 58
+    tINFOREQ  shift, and go to state 59
+    tSUP      shift, and go to state 60
+    tSUPOREQ  shift, and go to state 61
+    tINF      shift, and go to state 62
+
+    $default  reduce using rule 25 (Decla1)
 
 
 State 66
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   37  | E tMUL E •
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   27 DeclaS: tCOMA Decla1 • DeclaS
 
-    $default  reduce using rule 37 (E)
+    tCOMA  shift, and go to state 51
+
+    $default  reduce using rule 26 (DeclaS)
+
+    DeclaS  go to state 79
 
 
 State 67
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   40  | E tEQ E •
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   23 Decla: $@6 tINT Decla1 DeclaS tSEM •
 
-    tPLUS     shift, and go to state 48
-    tMINUS    shift, and go to state 49
-    tDIV      shift, and go to state 50
-    tMUL      shift, and go to state 51
-    tINFOREQ  shift, and go to state 53
-    tSUP      shift, and go to state 54
-    tSUPOREQ  shift, and go to state 55
-    tINF      shift, and go to state 56
-
-    $default  reduce using rule 40 (E)
+    $default  reduce using rule 23 (Decla)
 
 
 State 68
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
-   44  | E tINFOREQ E •
+   31 If: tIF $@7 tOP E tCP $@8 • Body $@9 Else
 
-    tPLUS   shift, and go to state 48
-    tMINUS  shift, and go to state 49
-    tDIV    shift, and go to state 50
-    tMUL    shift, and go to state 51
+    $default  reduce using rule 10 ($@2)
 
-    tINFOREQ  error (nonassociative)
-    tSUP      error (nonassociative)
-    tSUPOREQ  error (nonassociative)
-    tINF      error (nonassociative)
-
-    $default  reduce using rule 44 (E)
+    Body  go to state 80
+    $@2   go to state 17
 
 
 State 69
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   41  | E tSUP E •
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   38 E: E • tPLUS E
+   38  | E tPLUS E •
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    tPLUS   shift, and go to state 48
-    tMINUS  shift, and go to state 49
-    tDIV    shift, and go to state 50
-    tMUL    shift, and go to state 51
+    tDIV  shift, and go to state 56
+    tMUL  shift, and go to state 57
 
-    tINFOREQ  error (nonassociative)
-    tSUP      error (nonassociative)
-    tSUPOREQ  error (nonassociative)
-    tINF      error (nonassociative)
-
-    $default  reduce using rule 41 (E)
+    $default  reduce using rule 38 (E)
 
 
 State 70
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   42  | E tSUPOREQ E •
-   43  | E • tINF E
-   44  | E • tINFOREQ E
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   40  | E tMINUS E •
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    tPLUS   shift, and go to state 48
-    tMINUS  shift, and go to state 49
-    tDIV    shift, and go to state 50
-    tMUL    shift, and go to state 51
+    tDIV  shift, and go to state 56
+    tMUL  shift, and go to state 57
+
+    $default  reduce using rule 40 (E)
+
+
+State 71
+
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   41  | E tDIV E •
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
+
+    $default  reduce using rule 41 (E)
+
+
+State 72
+
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   39  | E tMUL E •
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
+
+    $default  reduce using rule 39 (E)
+
+
+State 73
+
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   42  | E tEQ E •
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
+
+    tPLUS     shift, and go to state 54
+    tMINUS    shift, and go to state 55
+    tDIV      shift, and go to state 56
+    tMUL      shift, and go to state 57
+    tINFOREQ  shift, and go to state 59
+    tSUP      shift, and go to state 60
+    tSUPOREQ  shift, and go to state 61
+    tINF      shift, and go to state 62
+
+    $default  reduce using rule 42 (E)
+
+
+State 74
+
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
+   46  | E tINFOREQ E •
+
+    tPLUS   shift, and go to state 54
+    tMINUS  shift, and go to state 55
+    tDIV    shift, and go to state 56
+    tMUL    shift, and go to state 57
 
     tINFOREQ  error (nonassociative)
     tSUP      error (nonassociative)
     tSUPOREQ  error (nonassociative)
     tINF      error (nonassociative)
 
-    $default  reduce using rule 42 (E)
+    $default  reduce using rule 46 (E)
 
 
-State 71
+State 75
 
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   43  | E tINF E •
-   44  | E • tINFOREQ E
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   43  | E tSUP E •
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    tPLUS   shift, and go to state 48
-    tMINUS  shift, and go to state 49
-    tDIV    shift, and go to state 50
-    tMUL    shift, and go to state 51
+    tPLUS   shift, and go to state 54
+    tMINUS  shift, and go to state 55
+    tDIV    shift, and go to state 56
+    tMUL    shift, and go to state 57
 
     tINFOREQ  error (nonassociative)
     tSUP      error (nonassociative)
@@ -997,81 +1024,66 @@ State 71
     $default  reduce using rule 43 (E)
 
 
-State 72
-
-   35 While: tWHILE tOP E tCP $@10 • Body
-
-    $default  reduce using rule 10 ($@2)
-
-    Body  go to state 78
-    $@2   go to state 17
-
-
-State 73
-
-   21 Aff: $@5 tID tAS E tSEM •
-
-    $default  reduce using rule 21 (Aff)
-
-
-State 74
-
-   25 Decla1: tID tAS E •
-   36 E: E • tPLUS E
-   37  | E • tMUL E
-   38  | E • tMINUS E
-   39  | E • tDIV E
-   40  | E • tEQ E
-   41  | E • tSUP E
-   42  | E • tSUPOREQ E
-   43  | E • tINF E
-   44  | E • tINFOREQ E
-
-    tPLUS     shift, and go to state 48
-    tMINUS    shift, and go to state 49
-    tDIV      shift, and go to state 50
-    tMUL      shift, and go to state 51
-    tEQ       shift, and go to state 52
-    tINFOREQ  shift, and go to state 53
-    tSUP      shift, and go to state 54
-    tSUPOREQ  shift, and go to state 55
-    tINF      shift, and go to state 56
-
-    $default  reduce using rule 25 (Decla1)
-
-
-State 75
-
-   27 DeclaS: tCOMA Decla1 • DeclaS
-
-    tCOMA  shift, and go to state 60
-
-    $default  reduce using rule 26 (DeclaS)
-
-    DeclaS  go to state 79
-
-
 State 76
 
-   23 Decla: $@6 tINT Decla1 DeclaS tSEM •
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   44  | E tSUPOREQ E •
+   45  | E • tINF E
+   46  | E • tINFOREQ E
 
-    $default  reduce using rule 23 (Decla)
+    tPLUS   shift, and go to state 54
+    tMINUS  shift, and go to state 55
+    tDIV    shift, and go to state 56
+    tMUL    shift, and go to state 57
+
+    tINFOREQ  error (nonassociative)
+    tSUP      error (nonassociative)
+    tSUPOREQ  error (nonassociative)
+    tINF      error (nonassociative)
+
+    $default  reduce using rule 44 (E)
 
 
 State 77
 
-   30 If: tIF tOP E tCP $@7 Body • $@8 Else
+   38 E: E • tPLUS E
+   39  | E • tMUL E
+   40  | E • tMINUS E
+   41  | E • tDIV E
+   42  | E • tEQ E
+   43  | E • tSUP E
+   44  | E • tSUPOREQ E
+   45  | E • tINF E
+   45  | E tINF E •
+   46  | E • tINFOREQ E
 
-    $default  reduce using rule 29 ($@8)
+    tPLUS   shift, and go to state 54
+    tMINUS  shift, and go to state 55
+    tDIV    shift, and go to state 56
+    tMUL    shift, and go to state 57
 
-    $@8  go to state 80
+    tINFOREQ  error (nonassociative)
+    tSUP      error (nonassociative)
+    tSUPOREQ  error (nonassociative)
+    tINF      error (nonassociative)
+
+    $default  reduce using rule 45 (E)
 
 
 State 78
 
-   35 While: tWHILE tOP E tCP $@10 Body •
+   37 While: tWHILE $@11 tOP E tCP $@12 • Body
 
-    $default  reduce using rule 35 (While)
+    $default  reduce using rule 10 ($@2)
+
+    Body  go to state 81
+    $@2   go to state 17
 
 
 State 79
@@ -1083,43 +1095,59 @@ State 79
 
 State 80
 
-   30 If: tIF tOP E tCP $@7 Body $@8 • Else
+   31 If: tIF $@7 tOP E tCP $@8 Body • $@9 Else
 
-    tELSE  shift, and go to state 81
+    $default  reduce using rule 30 ($@9)
 
-    $default  reduce using rule 33 (Else)
-
-    Else  go to state 82
+    $@9  go to state 82
 
 
 State 81
 
-   32 Else: tELSE • $@9 Body
+   37 While: tWHILE $@11 tOP E tCP $@12 Body •
 
-    $default  reduce using rule 31 ($@9)
-
-    $@9  go to state 83
+    $default  reduce using rule 37 (While)
 
 
 State 82
 
-   30 If: tIF tOP E tCP $@7 Body $@8 Else •
+   31 If: tIF $@7 tOP E tCP $@8 Body $@9 • Else
 
-    $default  reduce using rule 30 (If)
+    tELSE  shift, and go to state 83
+
+    $default  reduce using rule 34 (Else)
+
+    Else  go to state 84
 
 
 State 83
 
-   32 Else: tELSE $@9 • Body
+   33 Else: tELSE • $@10 Body
 
-    $default  reduce using rule 10 ($@2)
+    $default  reduce using rule 32 ($@10)
 
-    Body  go to state 84
-    $@2   go to state 17
+    $@10  go to state 85
 
 
 State 84
 
-   32 Else: tELSE $@9 Body •
+   31 If: tIF $@7 tOP E tCP $@8 Body $@9 Else •
 
-    $default  reduce using rule 32 (Else)
+    $default  reduce using rule 31 (If)
+
+
+State 85
+
+   33 Else: tELSE $@10 • Body
+
+    $default  reduce using rule 10 ($@2)
+
+    Body  go to state 86
+    $@2   go to state 17
+
+
+State 86
+
+   33 Else: tELSE $@10 Body •
+
+    $default  reduce using rule 33 (Else)

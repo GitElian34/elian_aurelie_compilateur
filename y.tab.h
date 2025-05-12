@@ -117,7 +117,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 27 "compilateur.y"
+#line 29 "compilateur.y"
  int nb; 
 int ligne2;
  int ligne;

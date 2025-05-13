@@ -1403,7 +1403,7 @@ yyreduce:
 
   case 31: /* $@9: %empty  */
 #line 108 "compilateur.y"
-         {patch((yyvsp[-6].ligne), taille_actuelle_asm+1); printf("Le If à été PATCH à %d\n\n\n\n\n\n", (taille_actuelle_asm+1));printf("Depuis %d\n", (yyvsp[-6].ligne));}
+         {patch((yyvsp[-6].ligne) - 1, taille_actuelle_asm+1); printf("Le If à été PATCH à %d\n\n\n\n\n\n", (taille_actuelle_asm+1));printf("Depuis %d\n", (yyvsp[-6].ligne));}
 #line 1408 "y.tab.c"
     break;
 
@@ -1411,7 +1411,7 @@ yyreduce:
 #line 109 "compilateur.y"
          {if( (yyvsp[0].nb)!= -1 ){
         
-        patch( (yyvsp[-8].ligne), (yyvsp[0].nb) + 1);
+        patch( (yyvsp[-8].ligne) - 1 , (yyvsp[0].nb) + 1);
 
         printf("Le If à été PATCH à BLOUBLI%d\n\n\n\n\n\n", ((yyvsp[0].nb)));
        
@@ -1427,13 +1427,13 @@ yyreduce:
 
   case 34: /* Else: tELSE $@10 Body  */
 #line 118 "compilateur.y"
-          {patch((yyvsp[-2].nb), taille_actuelle_asm + 1);}
+          {patch((yyvsp[-2].nb) -1, taille_actuelle_asm + 1);}
 #line 1432 "y.tab.c"
     break;
 
   case 35: /* Else: %empty  */
 #line 118 "compilateur.y"
-                                                     {(yyval.nb) = -1;}
+                                                        {(yyval.nb) = -1;}
 #line 1438 "y.tab.c"
     break;
 

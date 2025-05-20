@@ -4,6 +4,7 @@
         "stdlib.h": "c",
         "asm_ins.h": "c",
         "tableau.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "string.h": "c"
     }
 }

@@ -6,7 +6,17 @@
 struct instruction instruction_table[TAILLE_TABLEAU]; // Tableau de 256 cases
 int taille_actuelle_asm = 0;  
 extern int while_start= 0 ;
-// Initialisation du tableau avec des valeurs de 0 à 255 (ou vide selon besoin)
+
+int current_frame = -1;  // Aucun frame actif
+int sp = STACK_BASE_FUN ;     // Initialise le stack pointer
+
+void init_system() {
+    initialiser_instruction_table();
+    current_frame = -1;
+    sp = STACK_BASE_FUN ;
+}
+
+
 void initialiser_instruction_table() {
     taille_actuelle_asm = 0; 
     // Vide au départ
@@ -30,9 +40,13 @@ void afficher_instruction_table() {
 }
 
 void patch(int line_if, int new_line) {
-    printf("Avant %d avec %d \n\n\n\n\n\n\n",instruction_table[line_if].nb2,new_line);
-    instruction_table[line_if].nb1 = new_line;
-    printf("Après %d\n",instruction_table[line_if-1].nb1);
+    printf("Avant %d avec %d \n\n\n\n\n\n\n",instruction_table[line_if].res,new_line);
+    instruction_table[line_if].res = new_line;
+    printf("Après %d\n",instruction_table[line_if-1].res);
+}
+struct instruction * get_instruction_table(){
+    return instruction_table;
+
 }
 
 // Ajout d'un élément au tableau

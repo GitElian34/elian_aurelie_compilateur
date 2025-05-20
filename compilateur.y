@@ -1,11 +1,16 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "tableau.h"
 #include "asm_ins.h"
+#include "crosscompiler.h"
 
-
+void print_instruction_binary(struct instruction * inst);
+struct instruction * get_instruction_table();
 void yyerror(char *s);
+void generate_compact_binary(void) ;
+void afficher_instruction_table_binary(void);
 void afficher_tableau(void);
 void incr_depth(void);
 void decr_depth(void);
@@ -32,7 +37,7 @@ int ligne2;
   char name[128];
    }
 
-%token tINT tOP tCP tOB tCB tAS tSEM tCOMA tPLUS tMINUS tDIV tMUL tELSE tOR tAND tVOID tEQ tINFOREQ tSUP tSUPOREQ tINF
+%token tINT tOP tCP tOB tCB tAS tSEM tCOMA tPLUS tMINUS tDIV tMUL tELSE tOR tAND tVOID tEQ tINFOREQ tSUP tSUPOREQ tINF tRETURN 
 
 %token<name> tID
 %token<ligne> tIF
@@ -40,6 +45,8 @@ int ligne2;
 
 
 %token<nb> tNB
+%type <nb> Arg ArgList
+%type <name> Fun FunName
 %left tEQ
 %nonassoc tSUP tINF tSUPOREQ tINFOREQ  /* Non-associatifs, priorité moyenne */
 %left tPLUS tMINUS                      /* Priorité plus basse */
@@ -53,15 +60,46 @@ Program : Funs ;
 
 Funs : Fun Funs | Fun;
 
-Fun :  tINT{printf("function1!\n"); } tID tOP Args tCP Body {printf("function!\n"); } ;
+Fun :  ReturnType{printf("function1!\n"); } FunName  tOP Args tCP Body {printf("function!\n"); } ;
 
-Args :  tINT tID  ArgsM | ;
+FunName : tID { strcpy($$, $1); printf("Le nom de la fonction est %s\n", $1); };
 
-ArgsM : tCOMA tINT tID ArgsM | ;
+ReturnType : tINT | tVOID ;
 
-Body : {incr_depth();printf("body1!\n");}tOB{incr_depth();} Lins tCB {afficher_tableau();afficher_instruction_table();supprimer_par_profondeur(current_depth);decr_depth(); } ;
+Args :  tINT tID{ 
+            ajouter_element_deb($2,-1) ; {
+                printf("Ajout de la variable %s au tableau\n", $2);
+                
+            }
+        }      ArgsM | ;
+
+ArgsM : tCOMA tINT tID{ 
+            ajouter_element_deb($3,-1) ; {
+                printf("Ajout de la variable %s au tableau\n", $3);
+                
+            }
+        }
+        ArgsM | ;
+
+Arg :  tINT tID {$$ = 0;} ;
+
+ArgList : Arg { $$ = 1; }
+         | Arg tCOMA ArgList { $$ = $1 + $3; }
+         | {$$ = 0;};
+
+FuncCall : tID tOP ArgList tCP {
+    // Empiler les arguments
+    for(int i = 0; i < nb_args; i++) {
+        ajouter_instruction("COP",  STACK_BASE + i, arg_adresses[i],-1);
+    }
+};
+
+Body : {incr_depth();printf("body1!\n");}tOB{incr_depth();} Lins tCB {afficher_tableau();afficher_instruction_table();supprimer_par_profondeur(current_depth);decr_depth()
+;generate_compact_binary();} ;
 
 Lins : {printf("instruc");}Ins Lins |{printf("instruc");} ;
+
+Return : tRETURN E tSEM
 
 Ins :
       Aff
@@ -69,12 +107,13 @@ Ins :
     //| tID Op tSEM
     | If
     | While
-    | Decla ;
+    | Decla 
+    |Return ;
 
 Aff : {printf("instruc1");}tID tAS E tSEM{
                  
                 printf("Ajout de la variable %s au tableau\n", $2);
-                ajouter_instruction("COP",-1, get_adresse_by_name($2), getTailleFin()); ;set_value_by_name($2,get_value_by_adresse(getTailleFin()+1) );
+                ajouter_instruction("COP", get_adresse_by_name($2), getTailleFin(),-1); ;set_value_by_name($2,get_value_by_adresse(getTailleFin()+1) );
                 //assembleur different
             
             } ; //DES TRUCS A FAIRE ICI
@@ -91,7 +130,7 @@ Decla1 :
     | tID tAS E {
                 
                 ajouter_element_deb($1,get_value_by_adresse(getTailleFin()+1)); {
-                ajouter_instruction("COP",-1, getTailleDeb()-1, getTailleFin()); // -1 car on vient d'ajouter la variable
+                ajouter_instruction("COP", getTailleDeb()-1, getTailleFin(),-1); // -1 car on vient d'ajouter la variable
                 printf("Ajout de la variable %s au tableau\n", $1);
                 supprimer_dernier_element() ;
                 //printf("La taille du tableau est :  %d     \n", getTailleDeb());
@@ -103,7 +142,7 @@ Decla1 :
 DeclaS : | tCOMA Decla1 DeclaS ;
 
 
-If : tIF{;afficher_tableau();}  tOP E  tCP  {ajouter_instruction("JMF",-1,getTailleFin(),-1); $1 = taille_actuelle_asm; }  
+If : tIF{;afficher_tableau();}  tOP E  tCP  {ajouter_instruction("JMF",getTailleFin(),-1,-1); $1 = taille_actuelle_asm; }  
 
     Body {patch($1 - 1, taille_actuelle_asm+1); printf("Le If à été PATCH à %d\n\n\n\n\n\n", (taille_actuelle_asm+1));printf("Depuis %d\n", $1);}
     Else {if( $<nb>9!= -1 ){
@@ -117,8 +156,8 @@ If : tIF{;afficher_tableau();}  tOP E  tCP  {ajouter_instruction("JMF",-1,getTai
 Else : tELSE {ajouter_instruction("JMP",-1,-1,-1);printf("111111111111111111111\n\n\n\n\n");  $<nb>1 = taille_actuelle_asm ;}    
       Body{patch($<nb>1 -1, taille_actuelle_asm + 1);} |{$<nb>$ = -1;}  // est ce que $1 est reconnu ??????
 
-While : tWHILE{ Set_whileStart(taille_actuelle_asm+1);} tOP E  tCP  {{$1 = taille_actuelle_asm ;ajouter_instruction("JMF",-1, $1 ,-1);  } }  
-        Body {ajouter_instruction("JMP",-1,Get_whileStart(),-1);
+While : tWHILE{ Set_whileStart(taille_actuelle_asm+1);} tOP E  tCP  {{$1 = taille_actuelle_asm ;ajouter_instruction("JMF", $1, -1,-1);  } }  
+        Body {ajouter_instruction("JMP",Get_whileStart(),-1,-1);
         patch($1, taille_actuelle_asm+1); } ;
 
 
@@ -137,8 +176,8 @@ E :
     | E tSUPOREQ E
     | E tINF E {ajouter_instruction("INF",getTailleFin()+1,getTailleFin()+1,getTailleFin());supprimer_dernier_element() ;}
     | E tINFOREQ E
-    | tNB {ajouter_element_fin("temp",$1);ajouter_instruction("AFC",-1,getTailleFin(), $1);}
-    | tID  {ajouter_element_fin("temp",get_value_by_name($1)); ajouter_instruction("COP",-1,getTailleFin(), get_adresse_by_name($1));set_value_by_name($1,get_value_by_adresse(getTailleFin()+1) );
+    | tNB {ajouter_element_fin("temp",$1);ajouter_instruction("AFC",getTailleFin(), $1,-1);}
+    | tID  {ajouter_element_fin("temp",get_value_by_name($1)); ajouter_instruction("COP",getTailleFin(), get_adresse_by_name($1),-1);set_value_by_name($1,get_value_by_adresse(getTailleFin()+1) );
     //| tID  {ajouter_element_deb($1);ajouter_element_fin("temp"); ajouter_instruction("COP",-1, getTailleDeb(), getTailleFin());  
     }
     ;

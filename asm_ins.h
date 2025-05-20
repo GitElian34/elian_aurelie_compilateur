@@ -4,6 +4,11 @@
 #include <stdio.h>
 
 #define TAILLE_TABLEAU 256
+#define STACK_BASE_FUN 128
+#define FRAME_SIZE 8
+#define MAX_FRAMES 4  
+
+
 
 // Déclaration du tableau et de la taille actuelle
 struct instruction {
@@ -14,7 +19,8 @@ struct instruction {
 };
 
 // 2. Ensuite déclarer le tableau
-
+extern int current_frame;  // Frame actuel
+extern int sp;  
 extern int while_start;
 extern struct instruction instruction_table[TAILLE_TABLEAU];
 extern int taille_actuelle_asm;
@@ -24,6 +30,7 @@ void initialiser_instruction_table();
 int Get_whileStart(void);
 void Set_whileStart(int);
 void afficher_instruction_table();
+struct instruction * get_instruction_table() ;
 void ajouter_instruction(char * val, int resultat, int nbre1, int nbre2);
 void supprimer_instruction ( char * val) ; 
 void patch(int index, int valeur);

@@ -75,10 +75,11 @@ extern int yydebug;
     tSUP = 276,                    /* tSUP  */
     tSUPOREQ = 277,                /* tSUPOREQ  */
     tINF = 278,                    /* tINF  */
-    tID = 279,                     /* tID  */
-    tIF = 280,                     /* tIF  */
-    tWHILE = 281,                  /* tWHILE  */
-    tNB = 282                      /* tNB  */
+    tRETURN = 279,                 /* tRETURN  */
+    tID = 280,                     /* tID  */
+    tIF = 281,                     /* tIF  */
+    tWHILE = 282,                  /* tWHILE  */
+    tNB = 283                      /* tNB  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -108,23 +109,24 @@ extern int yydebug;
 #define tSUP 276
 #define tSUPOREQ 277
 #define tINF 278
-#define tID 279
-#define tIF 280
-#define tWHILE 281
-#define tNB 282
+#define tRETURN 279
+#define tID 280
+#define tIF 281
+#define tWHILE 282
+#define tNB 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 29 "compilateur.y"
+#line 34 "compilateur.y"
  int nb; 
 int ligne2;
  int ligne;
   char name[128];
    
 
-#line 128 "y.tab.h"
+#line 130 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

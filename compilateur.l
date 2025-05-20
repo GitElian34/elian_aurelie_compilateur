@@ -8,23 +8,7 @@
 
 D   [0-9]
 %%
-	/*
-	"=="              printf(" tEQ");
-	"<="			  printf(" tINFOREQ");
-	"<"				  printf(" tINF");
-	"["               printf(" tOSQR");
-	"]"               printf(" tCSQR");
 	
-
-	
-	"&&"			  printf("tAND");
-	"||"			  printf("tOR");
-			
-	while             printf(" tWHILE");
-	if                printf(" tIF");
-	else              printf(" tELSE");
-	void              printf(" tVOID");
-	*/
 
 int               return tINT;
 	/*
@@ -58,18 +42,12 @@ while             return tWHILE ;
 if                {yylval.ligne = atoi(yytext); return tIF; }
 else              {yylval.ligne2 = atoi(yytext); return tELSE; }
 void              return tVOID ;
-
+return			  return tRETURN ;
 [a-z]+            { strcpy(yylval.name, yytext); return tID; }
 	
 .                 { printf(" ERROR[%s]\n", yytext); exit(2); }
 
 %%
 
-/*
-int main(void) {
-	yylex();
-	printf("\n");
-	return 0;
-}
-*/
+
 

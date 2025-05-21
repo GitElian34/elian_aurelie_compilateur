@@ -38,7 +38,7 @@ void print_instruction_binary(struct instruction* inst) {
 }
 
 void afficher_instruction_table_binary() {
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+    //printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
     printf("Format: OP A B C\n");
     
     for (int i = 0; i < taille_actuelle_asm; i++) {
@@ -56,27 +56,27 @@ void generate_compact_binary() {
 
     for (int i = 0; i < taille_actuelle_asm; i++) {
         struct instruction inst = instruction_table[i];
-        char binary_str[9] = {0};
+        char binary_str[12] = {0}; // x" + 8 chiffres + " + \0 = 11 caractères + marge
         int opcode = get_opcode(inst.name);
         
         switch(opcode) {
             case 1: case 2: case 3: case 4:  // ADD, MUL, SOU, DIV (4 opérandes)
                 snprintf(binary_str, sizeof(binary_str), 
-                    "%02x%02x%02x%02x",  // Format hexadécimal
+                    "x\"%02x%02x%02x%02x\"",  // Notez le \" à la fin
                     opcode, inst.res, inst.nb1, inst.nb2);
                 break;
                 
-            case 5: case 6: case 7: case 8:  // COP, AFC, LOAD, STORE (3 opérandes + 00)
+            case 5: case 6: case 7: case 8:  // COP, AFC, LOAD, STORE
                 snprintf(binary_str, sizeof(binary_str),
-                    "%02x%02x%02x00",  // Format hexadécimal avec 00 à la fin
+                    "x\"%02x%02x%02x00\"",  // Notez le \" à la fin
                     opcode, inst.res, inst.nb1);
                 break;
                 
             default:  // NOP
-                strcpy(binary_str, "00");
+                strcpy(binary_str, "x\"00000000\"");
         }
         
-        fprintf(output, "\"%s\"\n", binary_str);
+        fprintf(output, "%s%s", binary_str, (i < taille_actuelle_asm - 1) ? ",\n" : "\n");
     }
     
     fclose(output);

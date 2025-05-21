@@ -60,7 +60,7 @@ Program : Funs ;
 
 Funs : Fun Funs | Fun;
 
-Fun :  ReturnType{printf("function1!\n"); } FunName  tOP Args tCP Body {printf("function!\n"); } ;
+Fun :  ReturnType FunName  tOP Args tCP Body {printf("function!\n"); } ;
 
 FunName : tID { strcpy($$, $1); printf("Le nom de la fonction est %s\n", $1); };
 
@@ -133,7 +133,7 @@ Decla1 :
                 ajouter_instruction("COP", getTailleDeb()-1, getTailleFin(),-1); // -1 car on vient d'ajouter la variable
                 printf("Ajout de la variable %s au tableau\n", $1);
                 supprimer_dernier_element() ;
-                //printf("La taille du tableau est :  %d     \n", getTailleDeb());
+                
                 
                 //assembleur different
             }
@@ -149,7 +149,7 @@ If : tIF{;afficher_tableau();}  tOP E  tCP  {ajouter_instruction("JMF",getTaille
         
         patch( $1 - 1 , $<nb>9 + 1);
 
-        printf("Le If à été PATCH à BLOUBLI%d\n\n\n\n\n\n", ($<nb>9));
+        printf("Le If à été PATCH à %d\n\n\n\n\n\n", ($<nb>9));
        
     }};
 
